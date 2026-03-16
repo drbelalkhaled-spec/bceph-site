@@ -115,8 +115,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);font-size:13px;col
 
 /* ── ANALYSIS PANEL ── */
 #analysis-panel{width:420px;flex-shrink:0;display:flex;flex-direction:column;background:var(--bg);border-left:1px solid var(--border);overflow:hidden}
-#analysis-tabs{display:flex;flex-shrink:0;border-bottom:1px solid var(--border);overflow-x:auto;background:var(--white)}
-#analysis-tabs::-webkit-scrollbar{height:0}
+#analysis-tabs{display:flex;flex-shrink:0;flex-wrap:wrap;border-bottom:1px solid var(--border);background:var(--white)}
 .atab{padding:11px 12px;font-size:10px;font-weight:700;color:var(--text-dim);cursor:pointer;border-bottom:2px solid transparent;transition:all .12s;white-space:nowrap;text-transform:uppercase;letter-spacing:.5px}
 .atab:hover{color:var(--text);background:var(--bg)}
 .atab.active{color:var(--gold);border-bottom-color:var(--gold);background:var(--gold-pale)}
@@ -231,8 +230,6 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);font-size:13px;col
 #patient-bar .pi-tag{font-size:10px;font-weight:600;color:var(--text-dim);white-space:nowrap;display:flex;align-items:center;gap:4px}
 #patient-bar .pi-tag .pi-val{color:var(--navy);font-family:var(--font-mono);font-weight:700}
 #patient-bar .pi-tag.empty .pi-val{color:var(--text-dim);font-style:italic;opacity:.5}
-#patient-bar .pi-edit-btn{height:24px;padding:0 12px;border:1.5px solid var(--border-light);border-radius:var(--radius);background:transparent;color:var(--text-dim);font-family:var(--font);font-size:9px;font-weight:700;cursor:pointer;transition:all .12s;text-transform:uppercase;letter-spacing:.4px}
-#patient-bar .pi-edit-btn:hover{background:var(--gold-pale);color:var(--gold);border-color:rgba(200,152,42,.4)}
 
 /* ── PATIENT MODAL ── */
 .pi-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
@@ -283,13 +280,13 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);font-size:13px;col
 </div>
 <!-- Report Options Modal -->
 <div class="modal-overlay" id="report-modal">
-  <div class="modal-box" style="max-width:520px;max-height:min(92vh,680px);display:flex;flex-direction:column;overflow:hidden">
+  <div class="modal-box" style="max-width:720px;max-height:min(92vh,680px);display:flex;flex-direction:column;overflow:hidden">
     <div style="flex-shrink:0">
       <div class="modal-title">📄 Report Options</div>
       <div class="modal-sub">Choose analyses to include in the printed report.</div>
     </div>
     <div style="flex:1;overflow-y:auto;padding-right:4px;min-height:0">
-      <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:12px" id="ropt-list">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:12px" id="ropt-list">
         <!-- options injected by JS -->
       </div>
       <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;padding:8px 12px;border-radius:var(--radius);background:rgba(200,152,42,.08);border:1px solid rgba(200,152,42,.15)">
@@ -343,10 +340,11 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);font-size:13px;col
 <div id="app">
   <div id="topbar">
     <div class="brand">
-      <div><div class="brand-name"><span>B-</span>Ceph</div><div class="brand-sub">Bayan Healthcare Analytics</div></div>
+      <div><div class="brand-name"><span>B</span>Ceph</div><div class="brand-sub">Bayan Healthcare Analytics</div></div>
     </div>
     <div class="tb-sep"></div>
     <button class="tb-btn" onclick="openPatientModal()">Patient</button>
+    <button class="tb-btn" onclick="openPatientModal()">✏️ Edit Patient</button>
     <div class="tb-sep"></div>
     <div class="tb-group">
       <input type="file" id="file-input" accept="image/*" style="display:none" onchange="loadImage(this)">
@@ -375,8 +373,6 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);font-size:13px;col
     <div class="pi-tag" id="pit-age"><span>🎂</span> <span class="pi-val" id="piv-age">—</span></div>
     <div class="pi-tag" id="pit-gender"><span>⚥</span> <span class="pi-val" id="piv-gender">—</span></div>
     <div class="pi-tag" id="pit-xraydate"><span>📅</span> <span class="pi-val" id="piv-xraydate">—</span></div>
-    <div style="flex:1"></div>
-    <button class="pi-edit-btn" onclick="openPatientModal()">Edit Patient</button>
   </div>
   <div id="workspace">
     <div id="canvas-panel">
@@ -550,10 +546,10 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);font-size:13px;col
         </div>
         <div class="apanel" id="tab-holdaway">
           <div class="sec-title"><span class="icon">🫦</span> Holdaway Soft Tissue Analysis</div>
-          <div class="sec-sub">Soft tissue evaluation referenced to the H-line (sPg–Ls). Requires Sn (subnasale) and Si (labiomental sulcus) — new landmarks in v2.</div>
+          <div class="sec-sub">Soft tissue evaluation referenced to the H-line (sPg–Ls). Requires Sn (subnasale) and Me' (soft tissue menton) — new landmarks in v2.</div>
           <table class="mtable" id="holdaway-table"><thead><tr><th>Measurement</th><th>Value</th><th>Norm</th><th>Dev / Needs</th></tr></thead><tbody></tbody></table>
           <div class="guide-box"><div class="guide-title">📘 H-Line (Holdaway)</div><div class="guide-text">Runs from soft tissue Pogonion (sPg) to most prominent point of upper lip (Ls). The H-angle between H-line and NB line norms 7–10°. Increasing H-angle = lip protrusion relative to chin.</div></div>
-          <div class="guide-box"><div class="guide-title">📘 Landmarks Required (v2)</div><div class="guide-text"><strong style="color:var(--gold)">Sn</strong> — Subnasale: junction of nasal columella and upper lip in midsagittal plane.<br><strong style="color:var(--gold)">Si</strong> — Sublabiale: deepest point of the labiomental sulcus (concavity between lower lip and chin prominence) — used for mentolabial sulcus depth.</div></div>
+          <div class="guide-box"><div class="guide-title">📘 New Landmarks Required (v2)</div><div class="guide-text"><strong style="color:var(--gold)">Sn</strong> — Subnasale: junction of nasal columella and upper lip in midsagittal plane.<br><strong style="color:var(--gold)">Me'</strong> — Soft tissue Menton: most inferior point of soft tissue chin.</div></div>
         </div>
         <div class="apanel" id="tab-pancherz">
           <div class="sec-title"><span class="icon">📏</span> Pancherz Analysis</div>
@@ -580,12 +576,12 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);font-size:13px;col
 </div>
 <script>
 /* ══════════════════════════════════════════════════════
-   B-Ceph v2 — Cephalometric Analysis Engine
+   BCeph v2 — Cephalometric Analysis Engine
    BAYAN Healthcare Analytics
    v2 New: Holdaway ST · Pancherz · 3-pt Occlusal Plane
            Landmark Skip · "Needs X" table feedback
            Report percentile bar charts
-           31 landmarks: Dc, CF, Sn, Me', Op3, Si
+           30 landmarks: Dc, CF, Sn, Me', Op3
    ══════════════════════════════════════════════════════ */
 
 if(!CanvasRenderingContext2D.prototype.roundRect){
@@ -598,7 +594,7 @@ if(!CanvasRenderingContext2D.prototype.roundRect){
   };
 }
 
-/* ── LANDMARK DEFINITIONS (31 total) ── */
+/* ── LANDMARK DEFINITIONS (30 total) ── */
 const LM_DEFS = [
   { id:'S',   name:'Sella (S)',             abbr:'S',    desc:'Centre of the sella turcica (pituitary fossa)',                                            color:'#ef4444' },
   { id:'N',   name:'Nasion (N)',            abbr:'N',    desc:'Most anterior point of frontonasal suture at the nasofrontal junction',                    color:'#f97316' },
@@ -625,7 +621,6 @@ const LM_DEFS = [
   { id:'Sn',  name:'Subnasale (Sn)',        abbr:'Sn',   desc:'Junction of the nasal columella and upper lip in the midsagittal plane — new in v2',       color:'#fcd34d' },
   { id:'Ls',  name:'Labiale Sup (Ls)',      abbr:'Ls',   desc:'Most anterior point of the upper lip vermilion border',                                     color:'#facc15' },
   { id:'Li',  name:'Labiale Inf (Li)',      abbr:'Li',   desc:'Most anterior point of the lower lip vermilion border',                                     color:'#a3e635' },
-  { id:'Si',  name:'Sublabiale (Si)',        abbr:'Si',   desc:'Deepest point of the labiomental sulcus — concavity between lower lip and chin prominence — used for mentolabial sulcus depth', color:'#86efac' },
   { id:'sPg', name:'ST Pogonion (sPg)',     abbr:'sPg',  desc:'Most anterior point of the soft tissue chin',                                               color:'#34d399' },
   { id:'MeP', name:"ST Menton (Me')",       abbr:"Me'",  desc:"Most inferior point of the soft tissue chin — soft tissue counterpart of Me — new in v2",  color:'#6ee7b7' },
   { id:'Op1', name:'Occlusal Pt 1 (Op1)',  abbr:'Op1',  desc:'Occlusal plane reference — most posterior distal cusp contact (molar)',                    color:'#38bdf8' },
@@ -942,7 +937,7 @@ const BJORK=[
 /* ── RICKETTS ── */
 const RICKETTS=[
   {name:'Facial Axis (Ba-N to Pt-Gn)',unit:'°',norm:90,sd:3.5,requires:['Ba','N','Pt','Gn'],
-    calc:()=>angleBetweenLines(L('Ba'),L('N'),L('Pt'),L('Gn'))},
+    calc:()=>acuteAngleBetweenLines(L('Ba'),L('N'),L('Pt'),L('Gn'))},
   {name:'Facial Depth (FH to N-Pg)',unit:'°',norm:87,sd:3,requires:['Po','Or','N','Pg'],
     calc:()=>angleBetweenLines(L('Po'),L('Or'),L('N'),L('Pg'))},
   {name:'Mandibular Plane to FH',unit:'°',norm:26,sd:4,requires:['Go','Me','Po','Or'],
@@ -1002,8 +997,8 @@ const HOLDAWAY=[
     calc:()=>angleBetweenLines(L('Po'),L('Or'),L('N'),L('sPg'))},
   {name:'UL Protrusion (Ls–A, FH proj)',unit:'mm',norm:14,sd:2,requires:['A','Ls','Po','Or'],
     calc:()=>{const fhx=L('Or').x-L('Po').x,fhy=L('Or').y-L('Po').y,fl=Math.sqrt(fhx*fhx+fhy*fhy);if(fl===0)return NaN;return px2mm(((L('Ls').x-L('A').x)*fhx+(L('Ls').y-L('A').y)*fhy)/fl);}},
-  {name:'Mentolabial Sulcus Depth (Si)',unit:'mm',norm:4,sd:2,requires:['Li','sPg','Si'],
-    calc:()=>{const dx=L('sPg').x-L('Li').x,dy=L('sPg').y-L('Li').y,len=Math.sqrt(dx*dx+dy*dy);if(len===0)return NaN;return px2mm(Math.abs((L('Si').x-L('Li').x)*dy-(L('Si').y-L('Li').y)*dx)/len);}},
+  {name:"Mentolabial Sulcus Depth (Me')",unit:'mm',norm:4,sd:2,requires:['Li','sPg','MeP'],
+    calc:()=>{const dx=L('sPg').x-L('Li').x,dy=L('sPg').y-L('Li').y,len=Math.sqrt(dx*dx+dy*dy);if(len===0)return NaN;return px2mm(Math.abs((L('MeP').x-L('Li').x)*dy-(L('MeP').y-L('Li').y)*dx)/len);}},
   {name:'Nasolabial Angle (Prn–Sn–Ls)',unit:'°',norm:102,sd:8,requires:['Prn','Sn','Ls'],
     calc:()=>angleAtVertex(L('Prn'),L('Sn'),L('Ls'))},
 ];
@@ -1040,7 +1035,7 @@ const ANALYSES = [
   {key:'mcnamara', label:'McNamara Analysis',         sub:'Facial heights, A to N-Perp, Pg to N-Perp',     data:MCNAMARA},
   {key:'bjork',    label:'Björk-Jarabak Analysis',   sub:'Saddle, articular, gonial angles, PFH/AFH',      data:BJORK},
   {key:'ricketts', label:'Ricketts Analysis',         sub:'Facial axis, depth, convexity, A-Po distances',  data:RICKETTS},
-  {key:'holdaway', label:'Holdaway Soft Tissue',      sub:'H-angle, nose, lip, ST convexity — needs Sn, Si', data:HOLDAWAY},
+  {key:'holdaway', label:'Holdaway Soft Tissue',      sub:'H-angle, nose, lip, ST convexity — needs Sn, Me\'', data:HOLDAWAY},
   {key:'pancherz', label:'Pancherz Analysis',         sub:'OLp projections — Op1=posterior molar, Op2=anterior incisor. Absolute values are reference-only (magnification-dependent).', data:PANCHERZ},
   {key:'eline',    label:'E-Line Analysis',           sub:'Lip positions to E-line (Prn–sPg), nasolabial angle',  data:ELINE},
 ];
@@ -1671,15 +1666,15 @@ function buildReport(sel){
 
   const badges=ANALYSES.filter(a=>sel[a.key]).map(a=>'<span style="display:inline-block;padding:2px 8px;background:#e8f0fd;color:#1b2d5b;border-radius:10px;font-size:8.5pt;font-weight:700;margin:2px">'+a.label+'</span>').join('');
   const normBadge='<span style="display:inline-block;padding:2px 8px;background:#fdf6e3;color:#92400e;border-radius:10px;font-size:8.5pt;font-weight:700;margin:2px">Norms: '+normSetLabel+'</span>';
-  const v2Badge='<span style="display:inline-block;padding:2px 8px;background:#ecfdf5;color:#065f46;border-radius:10px;font-size:8.5pt;font-weight:700;margin:2px">B-Ceph v2</span>';
+  const v2Badge='<span style="display:inline-block;padding:2px 8px;background:#ecfdf5;color:#065f46;border-radius:10px;font-size:8.5pt;font-weight:700;margin:2px">BCeph v2</span>';
   const sumT=document.getElementById('summary-text').textContent;
 
   const w=window.open('','_blank');
-  w.document.write('<!DOCTYPE html><html><head><meta charset="UTF-8"><title>B-Ceph Report</title><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"><style>*{box-sizing:border-box;margin:0;padding:0}body{font-family:"Plus Jakarta Sans",sans-serif;font-size:11pt;color:#1e293b;line-height:1.5;background:#e8ecf0}#tb{position:fixed;top:0;left:0;right:0;z-index:999;background:#1b2d5b;padding:10px 24px;display:flex;align-items:center;gap:10px;box-shadow:0 2px 8px rgba(0,0,0,.3)}.tbr{font-size:14px;font-weight:700;color:white;margin-right:auto}.tbr span{color:#c8982a}.bt{height:34px;padding:0 18px;border:none;border-radius:6px;font-family:inherit;font-size:12px;font-weight:600;cursor:pointer}.bp{background:#c8982a;color:#1b2d5b}.bg{background:rgba(255,255,255,.1);color:white;border:1px solid rgba(255,255,255,.15)}#pw{padding:68px 32px 48px;display:flex;justify-content:center}#rp{background:white;width:210mm;min-height:297mm;padding:20mm;box-shadow:0 4px 24px rgba(0,0,0,.18);border-radius:2px}@media print{#tb{display:none!important}body{background:white}#pw{padding:0;display:block}#rp{box-shadow:none;width:100%;min-height:unset;padding:15mm}}</style></head><body>'
-    +'<div id="tb"><div class="tbr"><span>B-</span>Ceph Report</div><button class="bt bp" onclick="window.print()">🖨 Print / PDF</button><button class="bt bg" onclick="window.close()">✕ Close</button></div>'
+  w.document.write('<!DOCTYPE html><html><head><meta charset="UTF-8"><title>BCeph Report</title><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"><style>*{box-sizing:border-box;margin:0;padding:0}body{font-family:"Plus Jakarta Sans",sans-serif;font-size:11pt;color:#1e293b;line-height:1.5;background:#e8ecf0}#tb{position:fixed;top:0;left:0;right:0;z-index:999;background:#1b2d5b;padding:10px 24px;display:flex;align-items:center;gap:10px;box-shadow:0 2px 8px rgba(0,0,0,.3)}.tbr{font-size:14px;font-weight:700;color:white;margin-right:auto}.tbr span{color:#c8982a}.bt{height:34px;padding:0 18px;border:none;border-radius:6px;font-family:inherit;font-size:12px;font-weight:600;cursor:pointer}.bp{background:#c8982a;color:#1b2d5b}.bg{background:rgba(255,255,255,.1);color:white;border:1px solid rgba(255,255,255,.15)}#pw{padding:68px 32px 48px;display:flex;justify-content:center}#rp{background:white;width:210mm;min-height:297mm;padding:20mm;box-shadow:0 4px 24px rgba(0,0,0,.18);border-radius:2px}@media print{#tb{display:none!important}body{background:white}#pw{padding:0;display:block}#rp{box-shadow:none;width:100%;min-height:unset;padding:15mm}}</style></head><body>'
+    +'<div id="tb"><div class="tbr"><span>B</span>Ceph Report</div><button class="bt bp" onclick="window.print()">🖨 Print / PDF</button><button class="bt bg" onclick="window.close()">✕ Close</button></div>'
     +'<div id="pw"><div id="rp">'
     +'<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px;padding-bottom:12px;border-bottom:3px solid #c8982a">'
-    +'<div><div style="font-size:22pt;font-weight:800;color:#1b2d5b;letter-spacing:-0.5px"><span style="color:#c8982a">B-</span>Ceph</div>'
+    +'<div><div style="font-size:22pt;font-weight:800;color:#1b2d5b;letter-spacing:-0.5px"><span style="color:#c8982a">B</span>Ceph</div>'
     +'<div style="font-size:9pt;color:#64748b;margin-top:2px;letter-spacing:0.5px">BAYAN Healthcare Analytics · Cephalometric Analysis Report</div>'
     +'<div style="margin-top:6px">'+badges+normBadge+'</div></div>'
     +'<div style="text-align:right;font-size:10pt;color:#64748b">'+today+'</div></div>'
@@ -1688,8 +1683,8 @@ function buildReport(sel){
     +(sel.summary?'<div style="background:#fdf6e3;border-left:3px solid #c8982a;padding:10px 14px;font-style:italic;margin:12px 0;font-size:10.5pt">'+sumT+'</div>':'')
     +ANALYSES.filter(a=>sel[a.key]).map(a=>tblHTML(a.label,a.data)).join('')
     +(notes?'<h3 style="color:#1b2d5b;margin:18px 0 8px;font-size:13pt;border-bottom:2px solid #c8982a;padding-bottom:4px">Clinical Notes</h3><p style="font-size:10.5pt;white-space:pre-wrap">'+notes.replace(/</g,'&lt;')+'</p>':'')
-    +'<div style="margin-top:32px;padding-top:12px;border-top:1px solid #cbd5e1;text-align:center"><p style="font-size:8.5pt;color:#94a3b8">Generated by <strong style="color:#c8982a">B-Ceph</strong> · BAYAN Healthcare Analytics</p></div>'
-    +'</div></div></body></html>');
+    +'<div style="margin-top:32px;padding-top:12px;border-top:1px solid #cbd5e1;text-align:center"><p style="font-size:8.5pt;color:#94a3b8">Generated by <strong style="color:#c8982a">BCeph</strong> · BAYAN Healthcare Analytics</p></div>'
+    +'</div></div><script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"BCeph Cephalometric Analysis Tool","applicationCategory":"MedicalApplication","operatingSystem":"Web Browser","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"Free browser-based cephalometric analysis tool for orthodontists.","url":"https://www.bceph.com/app.html","author":{"@type":"Organization","name":"Bayan Healthcare Analytics"}}<\/script></body></html>');
   w.document.close(); w.focus(); toast('Report opened','📄');
 }
 
