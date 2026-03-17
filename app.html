@@ -102,7 +102,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);font-size:13px;col
 .ct-sep{width:1px;height:20px;background:var(--border)}
 #landmark-selector{height:30px;padding:0 8px;border:1.5px solid var(--border-light);border-radius:var(--radius);background:var(--bg);color:var(--navy);font-family:var(--font);font-size:11px;font-weight:700;cursor:pointer;outline:none;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' fill='none'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23c8982a' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 8px center;padding-right:24px;max-width:220px}
 #landmark-selector option{background:var(--white);color:var(--text)}
-#lm-hint{font-size:10px;color:var(--text-dim);margin-left:4px;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#lm-hint{font-size:10px;color:var(--text-dim);margin-left:4px;flex:1;min-width:0;white-space:normal;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
 #zoom-display{font-size:10px;color:var(--text-dim);font-family:var(--font-mono)}
 #canvas-wrap{flex:1;overflow:hidden;position:relative;cursor:crosshair;touch-action:none;user-select:none;-webkit-user-select:none}
 #ceph-canvas{display:block;touch-action:none}
@@ -257,6 +257,10 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);font-size:13px;col
 .pi-section-label{font-size:9px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;display:flex;align-items:center;gap:6px}
 .pi-section-label::after{content:'';flex:1;height:1px;background:var(--border)}
 #pi-age-display{font-size:10px;color:var(--gold);font-weight:600;margin-top:2px;min-height:14px}
+/* ── BACKUP & RESTORE ── */
+.backup-btn-row{display:flex;gap:8px;width:100%;margin-bottom:10px}
+.backup-btn{flex:1;height:36px;padding:0 12px;border:none;border-radius:var(--radius);background:var(--navy-mid);color:var(--white);font-family:var(--font);font-size:11px;font-weight:600;cursor:pointer;transition:background .15s;display:flex;align-items:center;justify-content:center;gap:5px}
+.backup-btn:hover{background:var(--navy-light)}
 
 /* ── ANALYSIS FILTER BAR ── */
 #analysis-filter-bar{height:34px;flex-shrink:0;display:flex;align-items:center;gap:5px;padding:0 12px;background:var(--white);border-top:1px solid var(--border);overflow-x:auto}
@@ -322,6 +326,10 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);font-size:13px;col
     <div class="modal-sub">Search or select a saved patient, or create a new one. Data is stored locally in your browser.</div>
     <div id="pi-search-wrap"><span id="pi-search-icon">🔍</span><input type="text" id="pi-search" placeholder="Search by name or file number…" oninput="filterPatientList()" autocomplete="off"></div>
     <div id="pi-list-wrap"><div id="pi-list"></div><div id="pi-list-empty" style="display:none">No patients found.</div></div>
+    <div class="backup-btn-row">
+      <button class="backup-btn" onclick="exportBackup()">⬇ Export Backup</button>
+      <button class="backup-btn" onclick="importBackup()">⬆ Import Backup</button>
+    </div>
     <div class="pi-section-label">Patient Details</div>
     <div class="pi-grid">
       <div class="modal-field full"><label>Patient Name</label><input type="text" id="pi-name" placeholder="Full name" autocomplete="off"></div>
@@ -337,6 +345,44 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);font-size:13px;col
       <button class="mbtn" onclick="newPatientForm()" style="font-size:11px">+ New</button>
       <button class="mbtn" onclick="deleteCurrentPatient()" style="color:var(--red);font-size:11px">🗑 Delete</button>
       <button class="mbtn primary" onclick="savePatientInfo()">💾 Save &amp; Apply</button>
+    </div>
+  </div>
+</div>
+<!-- ── BACKUP MODAL ── -->
+<div class="modal-overlay" id="backup-modal">
+  <div class="modal-box" style="max-width:420px">
+    <div class="modal-title">💾 Export Backup</div>
+    <div class="modal-sub" id="backup-summary">Preparing backup…</div>
+    <div style="display:flex;align-items:flex-start;gap:10px;padding:10px 12px;border-radius:var(--radius);background:rgba(200,152,42,.08);border:1px solid rgba(200,152,42,.15);margin-bottom:12px">
+      <input type="checkbox" id="backup-include-images" checked style="accent-color:var(--gold);width:15px;height:15px;cursor:pointer;margin-top:1px;flex-shrink:0">
+      <div>
+        <label for="backup-include-images" style="font-size:12px;font-weight:600;color:var(--text-bright);cursor:pointer">Include X-ray images</label>
+        <div style="font-size:10px;color:var(--text-dim);margin-top:2px">Uncheck for a lightweight backup of clinical data only</div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="mbtn" onclick="closeModal('backup-modal')">Cancel</button>
+      <button class="mbtn primary" onclick="doExportBackup()">Export</button>
+    </div>
+  </div>
+</div>
+<!-- ── IMPORT MODAL ── -->
+<div class="modal-overlay" id="import-modal">
+  <div class="modal-box" style="max-width:420px">
+    <div class="modal-title">📂 Import Backup</div>
+    <div class="modal-sub" id="import-summary">Reading file…</div>
+    <div style="font-size:11px;color:var(--text-dim);margin-bottom:12px" id="import-images-note"></div>
+    <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:12px">
+      <label style="display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:var(--radius);border:1.5px solid var(--gold);background:rgba(200,152,42,.06);cursor:pointer">
+        <input type="radio" name="import-mode" value="replace" checked style="accent-color:var(--gold)"> <span style="font-size:12px;font-weight:600;color:var(--text-bright)">Replace all</span><span style="font-size:10px;color:var(--text-dim);margin-left:4px">— wipe current database</span>
+      </label>
+      <label style="display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:var(--radius);border:1.5px solid var(--border-light);background:var(--bg);cursor:pointer">
+        <input type="radio" name="import-mode" value="merge" style="accent-color:var(--gold)"> <span style="font-size:12px;font-weight:600;color:var(--text-bright)">Merge</span><span style="font-size:10px;color:var(--text-dim);margin-left:4px">— skip duplicate IDs</span>
+      </label>
+    </div>
+    <div class="modal-footer">
+      <button class="mbtn" onclick="closeModal('import-modal')">Cancel</button>
+      <button class="mbtn primary" onclick="doImportBackup()">Import</button>
     </div>
   </div>
 </div>
@@ -444,6 +490,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);font-size:13px;col
         <div class="atab" onclick="showTab('holdaway')">Holdaway</div>
         <div class="atab" onclick="showTab('pancherz')">Pancherz</div>
         <div class="atab" onclick="showTab('eline')">E-Line</div>
+        <div class="atab" onclick="showTab('kim')">Kim</div>
       </div>
       <div id="norm-bar">
         <span class="nl">Norms:</span>
@@ -574,6 +621,24 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);font-size:13px;col
           <div class="sec-sub">Soft tissue lip profile relative to the aesthetic plane — requires calibration for mm values.</div>
           <table class="mtable" id="eline-table"><thead><tr><th>Measurement</th><th>Value</th><th>Norm</th><th>Dev / Needs</th></tr></thead><tbody></tbody></table>
           <div class="guide-box"><div class="guide-title">📘 E-Line (Ricketts)</div><div class="guide-text">Runs from Pronasale to soft tissue Pogonion. Negative = lip behind E-line (ideal). Requires Prn, Ls, Li, sPg soft tissue landmarks.</div></div>
+        </div>
+        <!-- ── KIM ANALYSIS PANEL ── -->
+        <div class="apanel" id="tab-kim">
+          <div class="sec-title"><span class="icon">📐</span> Kim's Analysis</div>
+          <div class="sec-sub">ODI + APDI skeletal pattern indicators and Extraction Index (Kim 1978). Requires calibration for EI lip measurements.</div>
+          <table class="mtable" id="kim-table"><thead><tr><th>Measurement</th><th>Value</th><th>Norm</th><th>Dev / Needs</th></tr></thead><tbody></tbody></table>
+          <div class="guide-box">
+            <div class="guide-title">📘 ODI — Overbite Depth Indicator</div>
+            <div class="guide-text">ODI = AB plane to mandibular plane angle + palatal plane to FH angle (signed). Quantifies the vertical skeletal relationship. ODI &lt; 68.4° = open bite tendency; ODI &gt; 80.6° = deep bite tendency.</div>
+          </div>
+          <div class="guide-box">
+            <div class="guide-title">📘 APDI — Anteroposterior Dysplasia Indicator</div>
+            <div class="guide-text">APDI = Facial angle + AB plane to N–Pg angle + palatal plane to FH angle (signed). Quantifies the sagittal skeletal pattern. APDI &lt; 76.3° = Class II; APDI &gt; 86.5° = Class III.</div>
+          </div>
+          <div class="guide-box">
+            <div class="guide-title">📘 EI — Extraction Index</div>
+            <div class="guide-text">EI = Interincisal angle + 2 × (UL to E-line) + 2 × (LL to E-line), where lip values are positive when retruded. EI ≥ 161° → non-extraction; EI ≤ 155° → extraction indicated; 156–160° → borderline. Requires calibration for lip measurements.</div>
+          </div>
         </div>
       </div>
     </div>
@@ -1030,6 +1095,66 @@ const PANCHERZ=[
     calc:()=>{const a=olpProj(L('L1T')),b=olpProj(L('Pg'));return(isNaN(a)||isNaN(b))?NaN:a-b;}},
 ];
 
+/* ── KIM'S ANALYSIS ── */
+// ODI: AB-to-MandPlane + signed(PalPlane-to-FH)
+// APDI: FacialAngle + AB-to-NPg + signed(PalPlane-to-FH)
+// Sign convention (Kim 1978): palatal plane tipped anteriorly downward (ANS lower than PNS) → positive contribution.
+// In canvas coords (y↓): ANS.y > PNS.y means anteriorly downward → positive.
+function kimSignedPalFH(){
+  // Signed angle of palatal plane to FH.
+  // Positive when ANS is inferior to PNS (anterior tilt, normal orientation).
+  const ang=acuteAngleBetweenLines(L('ANS'),L('PNS'),L('Po'),L('Or'));
+  return (L('ANS').y > L('PNS').y) ? ang : -ang;
+}
+function kimLipToEline(lipPt){
+  // Perpendicular signed distance from lip to E-line (Prn–sPg).
+  // Positive = lip BEHIND E-line (retruded, favorable for EI).
+  // In canvas (y↓): E-line from Prn→sPg; lip behind = posterior = we negate the signed perp.
+  const dx=L('sPg').x-L('Prn').x, dy=L('sPg').y-L('Prn').y, len=Math.sqrt(dx*dx+dy*dy);
+  if(len===0) return NaN;
+  // signed: positive when lip is on the "posterior" side of E-line
+  const raw=((L(lipPt).x-L('Prn').x)*dy-(L(lipPt).y-L('Prn').y)*dx)/len;
+  return px2mm(-raw); // negate: anterior to line → negative (protruded)
+}
+const KIM=[
+  {name:'ODI',unit:'°',norm:74.5,sd:6.07,requires:['A','B','Go','Me','ANS','PNS','Po','Or'],calc:()=>{
+    // AB plane to mandibular plane angle (always acute)
+    const abMand=acuteAngleBetweenLines(L('A'),L('B'),L('Go'),L('Me'));
+    return abMand + kimSignedPalFH();
+  }},
+  {name:'APDI',unit:'°',norm:81.4,sd:5.14,requires:['N','Pg','Po','Or','A','B','ANS','PNS'],calc:()=>{
+    // Facial angle: angle of N-Pg line to FH (measured at FH, same as Downs Facial Angle)
+    const facialAng=angleBetweenLines(L('N'),L('Pg'),L('Po'),L('Or'));
+    // AB to N-Pg (facial plane): signed — B anterior to NPg → positive (Class III)
+    const dx=L('Pg').x-L('N').x, dy=L('Pg').y-L('N').y, len=Math.sqrt(dx*dx+dy*dy);
+    if(len===0) return NaN;
+    const cross=(L('B').x-L('A').x)*dy-(L('B').y-L('A').y)*dx;
+    const abNpg=acuteAngleBetweenLines(L('A'),L('B'),L('N'),L('Pg'));
+    const abNpgSigned=cross<0?abNpg:-abNpg; // positive when B is anterior to NPg
+    return facialAng + abNpgSigned + kimSignedPalFH();
+  }},
+  {name:'CF (ODI+APDI)',unit:'°',norm:155.9,sd:5.51,requires:['A','B','Go','Me','ANS','PNS','Po','Or','N','Pg'],calc:()=>{
+    const abMand=acuteAngleBetweenLines(L('A'),L('B'),L('Go'),L('Me'));
+    const palFH=kimSignedPalFH();
+    const facialAng=angleBetweenLines(L('N'),L('Pg'),L('Po'),L('Or'));
+    const dx=L('Pg').x-L('N').x, dy=L('Pg').y-L('N').y, len=Math.sqrt(dx*dx+dy*dy);
+    if(len===0) return NaN;
+    const cross=(L('B').x-L('A').x)*dy-(L('B').y-L('A').y)*dx;
+    const abNpg=acuteAngleBetweenLines(L('A'),L('B'),L('N'),L('Pg'));
+    const abNpgSigned=cross<0?abNpg:-abNpg;
+    const odi=abMand+palFH;
+    const apdi=facialAng+abNpgSigned+palFH;
+    return odi+apdi;
+  }},
+  {name:'EI (Extraction Index)',unit:'°',norm:null,sd:null,requires:['U1T','U1A','L1T','L1A','Prn','Ls','Li','sPg'],calc:()=>{
+    const interinc=angleBetweenLines(L('U1A'),L('U1T'),L('L1A'),L('L1T'));
+    const ul=kimLipToEline('Ls');
+    const ll=kimLipToEline('Li');
+    if(isNaN(ul)||isNaN(ll)) return NaN;
+    return interinc+(ul*2)+(ll*2);
+  }},
+];
+
 /* Report analysis registry */
 const ANALYSES = [
   {key:'eastman',  label:'Eastman Analysis',        sub:'SNA, SNB, ANB, MMPA, incisors, LAFH',            data:EASTMAN},
@@ -1043,6 +1168,7 @@ const ANALYSES = [
   {key:'holdaway', label:'Holdaway Soft Tissue',      sub:'H-angle, nose, lip, ST convexity — needs Sn, Me\'', data:HOLDAWAY},
   {key:'pancherz', label:'Pancherz Analysis',         sub:'OLp projections — Op1=posterior molar, Op2=anterior incisor. Absolute values are reference-only (magnification-dependent).', data:PANCHERZ},
   {key:'eline',    label:'E-Line Analysis',           sub:'Lip positions to E-line (Prn–sPg), nasolabial angle',  data:ELINE},
+  {key:'kim',      label:"Kim's Analysis",            sub:'ODI, APDI, Combination Factor, Extraction Index — requires calibration for EI', data:KIM},
 ];
 
 /* ── RENDER ── */
@@ -1570,6 +1696,82 @@ function loadLandmarks(){
 }
 function clearAllLandmarks(){ if(!confirm('Clear all landmarks?'))return; LM_IDS.forEach(id=>delete landmarks[id]); updateAllUI(); render(); selectLandmark('S'); toast('Cleared','🗑'); }
 
+/* ── REPORT INTERPRETATION LOOKUP ── */
+// Keys match measurement names exactly. Each entry has lo (below normal) and hi (above normal).
+// null = no distinct clinical meaning in that direction.
+const REPORT_INTERP = {
+  // Eastman / Steiner shared
+  'SNA':               {lo:'Maxillary retrusion.', hi:'Maxillary protrusion.'},
+  'SNB':               {lo:'Mandibular retrusion.', hi:'Mandibular protrusion.'},
+  'ANB':               {lo:'Skeletal Class III tendency.', hi:'Skeletal Class II tendency.'},
+  'SN–MaxP':           {lo:'Low maxillary plane inclination.', hi:'Increased maxillary plane inclination.'},
+  'MMPA':              {lo:'Hypodivergent pattern.', hi:'Hyperdivergent pattern.'},
+  'U1–MaxP':           {lo:'Upper incisor retrusion to maxillary plane.', hi:'Upper incisor protrusion to maxillary plane.'},
+  'L1–MandP':          {lo:'Lower incisor retrusion to mandibular plane.', hi:'Lower incisor protrusion to mandibular plane.'},
+  'Interincisal':      {lo:'Excessive incisor proclination.', hi:'Incisor retroclination tendency.'},
+  'U1–NA (mm)':        {lo:'Upper incisor retrusion.', hi:'Upper incisor protrusion.'},
+  'L1–NB (mm)':        {lo:'Lower incisor retrusion.', hi:'Lower incisor protrusion.'},
+  'LAFH Ratio':        {lo:'Decreased lower anterior face height.', hi:'Increased lower anterior face height.'},
+  // Steiner-specific
+  'GoGn–SN':           {lo:'Hypodivergent (deep bite) pattern.', hi:'Hyperdivergent (open bite) pattern.'},
+  'U1–NA (°)':         {lo:'Upper incisor retrusion.', hi:'Upper incisor protrusion.'},
+  'L1–NB (°)':         {lo:'Lower incisor retrusion.', hi:'Lower incisor protrusion.'},
+  // Downs
+  'Facial Angle':      {lo:'Retrognathic mandible.', hi:'Prognathic mandible.'},
+  'Convexity':         {lo:'Concave facial profile.', hi:'Convex facial profile.'},
+  'A–B Plane':         {lo:'Class III jaw relationship.', hi:'Class II jaw relationship.'},
+  'Mand Plane (FH)':   {lo:'Hypodivergent jaw pattern.', hi:'Hyperdivergent jaw pattern.'},
+  'Y-Axis':            {lo:'Backward mandibular rotation.', hi:'Forward mandibular rotation.'},
+  // Tweed
+  'FMA':               {lo:'Hypodivergent (deep bite) pattern.', hi:'Hyperdivergent (open bite) pattern.'},
+  'FMIA':              {lo:'Lower incisor protrusion.', hi:'Excessive lower incisor retrusion.'},
+  'IMPA':              {lo:'Lower incisor retrusion to mandible.', hi:'Lower incisor protrusion to mandible.'},
+  // McNamara
+  'Upper Face Ht (N–ANS)':    {lo:'Decreased upper facial height.', hi:'Increased upper facial height.'},
+  'Lower Face Ht (ANS–Me)':   {lo:'Decreased lower facial height.', hi:'Increased lower facial height.'},
+  'A to N-Perp':       {lo:'Maxillary retrusion to nasion perpendicular.', hi:'Maxillary protrusion to nasion perpendicular.'},
+  'Pg to N-Perp':      {lo:'Mandibular retrusion to nasion perpendicular.', hi:'Mandibular protrusion to nasion perpendicular.'},
+  // Björk-Jarabak
+  'Saddle Angle (N-S-Ar)':        {lo:null, hi:'Increased posterior cranial base angulation.'},
+  'Articular Angle (S-Ar-Go)':    {lo:null, hi:'Decreased posterior condylar angle.'},
+  'Gonial Angle (Ar-Go-Me)':      {lo:'Closed gonial angle — horizontal growth tendency.', hi:'Open gonial angle — vertical growth tendency.'},
+  'Upper Gonial (Ar-Go-N)':       {lo:'Reduced upper gonial angle.', hi:'Increased upper gonial angle.'},
+  'Lower Gonial (N-Go-Me)':       {lo:'Reduced lower gonial angle.', hi:'Increased lower gonial angle.'},
+  'Sum of Angles':                 {lo:'Forward mandibular rotation — hypodivergent.', hi:'Backward mandibular rotation — hyperdivergent.'},
+  'Post Face Ht (S-Go)':          {lo:'Short posterior face height — vertical pattern.', hi:null},
+  'Ant Face Ht (N-Me)':           {lo:'Decreased anterior facial height.', hi:'Increased anterior facial height.'},
+  'PFH/AFH Ratio':                {lo:'Vertical growth pattern.', hi:'Horizontal growth pattern.'},
+  // Ricketts
+  'Facial Axis (Ba-N to Pt-Gn)':  {lo:'Dolichofacial growth tendency.', hi:'Brachyfacial growth tendency.'},
+  'Facial Depth (FH to N-Pg)':    {lo:'Mandibular retrusion (Class II).', hi:'Mandibular protrusion (Class III).'},
+  'Mandibular Plane to FH':        {lo:'Hypodivergent pattern.', hi:'Hyperdivergent pattern.'},
+  'Lower Face Ht % (ANS-Me/N-Me)':{lo:'Decreased vertical dimension.', hi:'Increased vertical dimension.'},
+  'Convexity A to N-Pg':           {lo:'Straight or concave skeletal profile.', hi:'Convex skeletal profile.'},
+  'U1 to A-Po (mm)':              {lo:'Upper incisor retrusion to A-Po line.', hi:'Upper incisor protrusion to A-Po line.'},
+  'L1 to A-Po (mm)':              {lo:'Lower incisor retrusion to A-Po line.', hi:'Lower incisor protrusion to A-Po line.'},
+  'L1 to A-Po (°)':               {lo:'Lower incisor retrusion to A-Po line.', hi:'Lower incisor protrusion to A-Po line.'},
+  'U1 to FH (°)':                  {lo:'Upper incisor retrusion to FH.', hi:'Upper incisor protrusion to FH.'},
+  'Interincisal (U1–L1)':          {lo:'Excessive incisor proclination.', hi:'Incisor retroclination tendency.'},
+  // Wits
+  'Wits Appraisal (AO–BO)':       {lo:'Skeletal Class III pattern.', hi:'Skeletal Class II pattern.'},
+  // Holdaway
+  'H-Angle (H-line to NB)':        {lo:'Retrusive soft tissue profile.', hi:'Protrusive soft tissue profile.'},
+  'Nose Prominence to H-Line':      {lo:'Deficient nasal projection.', hi:'Excess nasal projection.'},
+  'Lower Lip to H-Line':            {lo:'Retruded lower lip.', hi:'Protruded lower lip.'},
+  'Soft Tissue Convexity (Prn–Sn–sPg)':{lo:'Skeletal/soft tissue concavity.', hi:'Skeletal/soft tissue convexity.'},
+  'ST Facial Angle (FH–N–sPg)':    {lo:'Retrusive chin soft tissue profile.', hi:'Protrusive chin soft tissue profile.'},
+  'UL Protrusion (Ls–A, FH proj)': {lo:'Deficient upper lip protrusion.', hi:'Excessive upper lip protrusion.'},
+  "Mentolabial Sulcus Depth (Me')": {lo:'Shallow mentolabial sulcus.', hi:'Deep mentolabial sulcus.'},
+  'Nasolabial Angle (Prn–Sn–Ls)':  {lo:'Acute nasolabial angle — protrusive lip base.', hi:'Obtuse nasolabial angle — retrusive lip base.'},
+  // E-Line
+  'Upper Lip to E-Line':           {lo:'Upper lip retrusion to E-line.', hi:'Upper lip protrusion to E-line.'},
+  'Lower Lip to E-Line':           {lo:'Lower lip retrusion to E-line.', hi:'Lower lip protrusion to E-line.'},
+  // Kim
+  'ODI':                           {lo:'Skeletal open bite tendency.', hi:'Skeletal deep bite tendency.'},
+  'APDI':                          {lo:'Class II (distal) skeletal pattern.', hi:'Class III (mesial) skeletal pattern.'},
+  'CF (ODI+APDI)':                 {lo:'Open bite and Class II tendency.', hi:'Deep bite and Class III tendency.'},
+};
+
 /* ── REPORT ── */
 function generateReport(){
   const n=LM_IDS.filter(id=>has(id)).length;
@@ -1628,10 +1830,29 @@ function buildReport(sel){
           }
         }
       }
+      // ── INTERPRETATION (report only) ──
+      let interpHTML='';
+      if(!refOnly&&!isNaN(numVal)){
+        const entry=REPORT_INTERP[m.name];
+        const {norm:n2,sd:s2}=getNorm(m);
+        const dv=numVal-n2;
+        if(entry&&Math.abs(dv)>s2){
+          const txt=dv<0?entry.lo:entry.hi;
+          if(txt) interpHTML='<span style="color:#c8982a;font-style:italic;font-size:0.88em;margin-left:4px">'+txt+'</span>';
+        }
+      }
+      // Special EI interpretation (ref-only threshold-based)
+      if(m.name==='EI (Extraction Index)'&&!isNaN(numVal)){
+        let eiTxt='';
+        if(numVal>=161) eiTxt='Non-extraction case indicated.';
+        else if(numVal<=155) eiTxt='Extraction indicated.';
+        else eiTxt='Borderline — consider soft tissue and growth.';
+        interpHTML='<span style="color:#c8982a;font-style:italic;font-size:0.88em;margin-left:4px">'+eiTxt+'</span>';
+      }
       const barHTML=refOnly?'':devBar(numVal,norm,sd);
       const bdrB=barHTML?'':'border-bottom:1px solid #e2e8f0;';
       return '<tr><td style="padding:5px 8px;'+bdrB+'font-weight:600">'+m.name+'</td>'
-        +'<td style="padding:5px 8px;'+bdrB+'text-align:right;font-family:monospace">'+val+'</td>'
+        +'<td style="padding:5px 8px;'+bdrB+'text-align:right;font-family:monospace">'+val+interpHTML+'</td>'
         +'<td style="padding:5px 8px;'+bdrB+'text-align:right;color:#64748b;font-size:10pt">'+normText+'</td>'
         +'<td style="padding:5px 8px;'+bdrB+'text-align:right;font-family:monospace;font-weight:600;color:'+dc+'">'+ds+'</td></tr>'
         +(barHTML?'<tr><td colspan="4" style="padding:0 8px 20px;border-bottom:1px solid #e2e8f0">'+barHTML+'</td></tr>':'');
@@ -1691,6 +1912,109 @@ function buildReport(sel){
     +'<div style="margin-top:32px;padding-top:12px;border-top:1px solid #cbd5e1;text-align:center"><p style="font-size:8.5pt;color:#94a3b8">Generated by <strong style="color:#c8982a">BCeph</strong> · BAYAN Healthcare Analytics</p><p style="font-size:8.5pt;color:#94a3b8;margin-top:3px">Inquiries, suggestions &amp; support: <a href="mailto:team@bceph.com" style="color:#c8982a;text-decoration:none">team@bceph.com</a></p></div>'
     +'</div></div><script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"BCeph Cephalometric Analysis Tool","applicationCategory":"MedicalApplication","operatingSystem":"Web Browser","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"Free browser-based cephalometric analysis tool for orthodontists.","url":"https://www.bceph.com/app.html","author":{"@type":"Organization","name":"Bayan Healthcare Analytics"}}<\/script></body></html>');
   w.document.close(); w.focus(); toast('Report opened','📄');
+}
+
+/* ── BACKUP & RESTORE ── */
+let _importPending = null; // holds parsed patients before user confirms
+
+function downloadFile(blob, filename){
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download=filename;
+  document.body.appendChild(a);
+  a.click();
+  setTimeout(()=>{document.body.removeChild(a);URL.revokeObjectURL(a.href);},100);
+}
+
+function exportBackup(){
+  autoSaveCurrentPatient();
+  const db=getPatientDB();
+  if(!db.length){toast('No patients to export','⚠️');return;}
+  const total=db.length;
+  const withImgs=db.filter(p=>p._tracing&&p._tracing.imgData).length;
+  document.getElementById('backup-summary').textContent=total+' patient'+(total===1?'':'s')+' ('+withImgs+' with X-rays)';
+  document.getElementById('backup-include-images').checked=true;
+  openModal('backup-modal');
+}
+
+function doExportBackup(){
+  const db=getPatientDB();
+  const includeImages=document.getElementById('backup-include-images').checked;
+  const clone=JSON.parse(JSON.stringify(db));
+  if(!includeImages) clone.forEach(p=>{if(p._tracing)p._tracing.imgData=null;});
+  const today=new Date().toISOString().slice(0,10);
+  const envelope={app:'BCeph',version:'2.0',exportDate:new Date().toISOString(),includesImages:includeImages,patientCount:clone.length,patients:clone};
+  const blob=new Blob([JSON.stringify(envelope,null,2)],{type:'application/json'});
+  downloadFile(blob,'bceph_backup_'+today+'.json');
+  closeModal('backup-modal');
+  toast('Backup exported','💾');
+}
+
+function importBackup(){
+  const input=document.createElement('input');
+  input.type='file'; input.accept='.json';
+  input.onchange=()=>{
+    const file=input.files[0]; if(!file) return;
+    const reader=new FileReader();
+    reader.onload=e=>{
+      try{
+        const parsed=JSON.parse(e.target.result);
+        let patients, exportDate='unknown', includesImages=false;
+        if(Array.isArray(parsed)){
+          // Legacy raw array
+          patients=parsed;
+          toast('Legacy format detected — proceeding','⚠️');
+        } else {
+          if(parsed.app!=='BCeph'||!Array.isArray(parsed.patients)||!parsed.patients.length){
+            toast('Invalid backup file','❌'); return;
+          }
+          patients=parsed.patients;
+          exportDate=parsed.exportDate?parsed.exportDate.slice(0,10):'unknown';
+          includesImages=!!parsed.includesImages;
+        }
+        if(!patients.length){toast('Backup contains no patients','⚠️');return;}
+        _importPending=patients;
+        document.getElementById('import-summary').textContent='Found '+patients.length+' patient'+(patients.length===1?'':'s')+' in backup (exported '+exportDate+')';
+        document.getElementById('import-images-note').textContent='Images: '+(includesImages?'included':'not included');
+        document.querySelector('input[name="import-mode"][value="replace"]').checked=true;
+        openModal('import-modal');
+      }catch(err){
+        toast('Import failed — invalid file','❌');
+      }
+    };
+    reader.readAsText(file);
+  };
+  input.click();
+}
+
+function doImportBackup(){
+  if(!_importPending){closeModal('import-modal');return;}
+  try{
+    const mode=document.querySelector('input[name="import-mode"]:checked').value;
+    let finalDB;
+    if(mode==='replace'){
+      finalDB=_importPending;
+    } else {
+      const existing=getPatientDB();
+      const existingIds=new Set(existing.map(p=>p.id));
+      const toAdd=_importPending.filter(p=>!existingIds.has(p.id));
+      finalDB=[...existing,...toAdd];
+    }
+    setPatientDB(finalDB);
+    renderPatientList();
+    if(mode==='replace'&&patientInfo.id){
+      const still=finalDB.find(p=>p.id===patientInfo.id);
+      if(still) loadPatientFromList(patientInfo.id);
+      else { clearWorkspace(); patientInfo={id:'',name:'',fileno:'',age:'',gender:'',dob:'',xraydate:'',doctor:'',complaint:''}; updatePatientBar(); }
+    }
+    const count=_importPending.length;
+    _importPending=null;
+    closeModal('import-modal');
+    toast('Imported '+count+' patient'+(count===1?'':'s'),'📂');
+  }catch(err){
+    _importPending=null;
+    toast('Import failed — invalid file','❌');
+  }
 }
 
 /* ── PATIENT DB ── */
