@@ -53,8 +53,8 @@ html,body{font-family:var(--font);font-size:13px;overflow-x:hidden;background:#f
 .topnav-btn{height:36px;padding:0 24px;border-radius:8px;background:var(--gold);border:none;color:#0e1a38;font-family:var(--font);font-size:13px;font-weight:800;cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;gap:8px;text-decoration:none;}
 .topnav-btn:hover{background:var(--gold-light);transform:translateY(-1px);}
 /* ── HERO SCREENSHOT ── */
-.hero-screenshot-wrap{max-width:900px;width:100%;margin:40px auto 0;box-shadow:0 20px 80px rgba(200,152,42,0.12);border-radius:12px;overflow:hidden;}
-.hero-screenshot-wrap img{width:100%;display:block;border-radius:12px;}
+.hero-screenshot-wrap{max-width:900px;width:100%;margin:40px auto -20px;-webkit-mask-image:linear-gradient(to bottom,black 30%,transparent 92%),linear-gradient(to right,transparent 0%,black 5%,black 95%,transparent 100%);mask-image:linear-gradient(to bottom,black 30%,transparent 92%),linear-gradient(to right,transparent 0%,black 5%,black 95%,transparent 100%);-webkit-mask-composite:source-in;mask-composite:intersect;}
+.hero-screenshot-wrap img{width:100%;display:block;}
 /* ── HERO — dark ── */
 .s-hero{
   min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;
@@ -96,8 +96,8 @@ html,body{font-family:var(--font);font-size:13px;overflow-x:hidden;background:#f
 
 /* ── STATS — transition zone: dark → light ── */
 .s-stats{
-  background:linear-gradient(180deg,#1a2d58 0%,#e8edf5 100%);
-  padding:0;
+  background:linear-gradient(180deg,#1a2d58 0%,#1a2d58 55%,#e8edf5 100%);
+  padding:0 0 80px;
 }
 .stats-inner{display:flex;align-items:stretch;justify-content:center;max-width:900px;margin:0 auto;}
 .stat-item{flex:1;text-align:center;padding:32px 20px;border-right:1px solid rgba(255,255,255,.08);}
@@ -194,8 +194,8 @@ html,body{font-family:var(--font);font-size:13px;overflow-x:hidden;background:#f
 .footer-sep{color:rgba(255,255,255,.15);}
 .footer-link{color:rgba(255,255,255,.2);text-decoration:none;transition:color .15s;}
 .footer-link:hover{color:rgba(255,255,255,.5);}
-.footer-ig{display:inline-flex;align-items:center;opacity:.25;transition:opacity .15s;}
-.footer-ig:hover{opacity:.55;}
+.footer-ig{display:inline-flex;align-items:center;color:#f72585;transition:color .15s;}
+.footer-ig:hover{color:#ff6eb4;}
 </style>
 </head>
 <body>
