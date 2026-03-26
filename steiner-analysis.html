@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Primary SEO -->
+  <title>Steiner Analysis: Complete Cephalometric Guide — SNA, SNB, ANB | BCeph</title>
+  <meta name="description" content="A complete guide to Steiner cephalometric analysis — SNA, SNB, ANB measurements, normative values, clinical interpretation, and how Steiner analysis guides orthodontic treatment planning. Run it free in BCeph.">
+  <link rel="canonical" href="https://www.bceph.com/steiner-analysis">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Steiner Analysis: Complete Cephalometric Guide — SNA, SNB, ANB">
+  <meta property="og:description" content="Everything clinicians and students need to know about Steiner cephalometric analysis: measurements, normative values, clinical interpretation, and treatment planning applications.">
+  <meta property="og:url" content="https://www.bceph.com/steiner-analysis">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="https://www.bceph.com/og-preview.png">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Steiner Analysis: Complete Cephalometric Guide">
+  <meta name="twitter:description" content="SNA, SNB, ANB — a clinician-authored reference for Steiner cephalometric analysis measurements, norms, and treatment planning applications.">
+
+  <!-- Article Schema -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Steiner Analysis: A Complete Cephalometric Guide",
+    "description": "A comprehensive clinical guide to Steiner cephalometric analysis covering SNA, SNB, ANB, dental measurements, normative values, and orthodontic treatment planning applications.",
+    "datePublished": "2026-03-26",
+    "dateModified": "2026-03-26",
+    "author": {
+      "@type": "Organization",
+      "name": "Bayan Healthcare Analytics",
+      "url": "https://www.bceph.com"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "BCeph",
+      "url": "https://www.bceph.com",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://www.bceph.com/favicon.ico"
+      }
+    },
+    "url": "https://www.bceph.com/steiner-analysis",
+    "mainEntityOfPage": "https://www.bceph.com/steiner-analysis",
+    "keywords": "Steiner analysis, Steiner cephalometric analysis, SNA SNB ANB, Steiner analysis measurements, Steiner analysis software, cephalometric analysis orthodontics"
+  }
+  </script>
+
+  <!-- FAQ Schema -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is Steiner analysis in cephalometrics?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Steiner analysis is a cephalometric analysis system developed by Cecil Steiner in 1953 that uses the Sella-Nasion (SN) plane as its primary reference. It measures skeletal jaw positions (SNA, SNB, ANB), dental angulations (U1–NA, L1–NB), and the interincisal angle to diagnose malocclusion and guide orthodontic treatment planning."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is the ANB angle in Steiner analysis?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "ANB is the difference between SNA and SNB — the angle at point A (subspinale) between lines NA and NB, representing the sagittal relationship between the maxilla and mandible. The norm is 2° (±2°). An ANB above 4° indicates a skeletal Class II tendency; below 0° indicates a skeletal Class III tendency."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What are the normal values for SNA and SNB?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "The Steiner normative values are SNA = 82° (±2°) and SNB = 80° (±2°). SNA reflects maxillary prognathism relative to the anterior cranial base; SNB reflects mandibular prognathism. Values outside ±2° from the norm indicate skeletal discrepancy requiring clinical interpretation."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What dental measurements does Steiner analysis include?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Steiner analysis includes four dental measurements: U1–NA angle (norm 22°) and U1–NA distance (norm 4 mm) for upper incisor position; L1–NB angle (norm 25°) and L1–NB distance (norm 4 mm) for lower incisor position; and the interincisal angle (norm 131°). It also includes the Pg–NB linear distance for chin prominence assessment."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Is there free Steiner analysis software?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. BCeph is a free, browser-based cephalometric tool that includes a full Steiner analysis module alongside 8 other analysis systems. It runs entirely in your browser with no installation, no subscription, and no cloud upload. All patient data stays on your device. Try it at bceph.com."
+        }
+      }
+    ]
+  }
+  </script>
+
+  <!-- Breadcrumb Schema -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "BCeph",
+        "item": "https://www.bceph.com"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Cephalometric Analysis",
+        "item": "https://www.bceph.com/cephalometric-analysis"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "Steiner Analysis",
+        "item": "https://www.bceph.com/steiner-analysis"
+      }
+    ]
+  }
+  </script>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --navy: #152242;
+      --navy-mid: #1c2e57;
+      --navy-light: #243569;
+      --gold: #D4A030;
+      --gold-light: #c8920a;
+      --gold-dim: rgba(212, 160, 48, 0.12);
+      --text: #152242;
+      --text-muted: #2e4070;
+      --text-subtle: #5a729a;
+      --border: rgba(21, 34, 66, 0.12);
+      --border-gold: rgba(212, 160, 48, 0.3);
+      --surface: #f4f6fb;
+      --serif: 'DM Serif Display', Georgia, serif;
+      --sans: 'Plus Jakarta Sans', system-ui, sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--sans);
+      background-color: #ffffff;
+      color: var(--text);
+      line-height: 1.75;
+      font-size: 16px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 2rem;
+    }
+    .nav-inner {
+      max-width: 960px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+    }
+    .nav-logo {
+      font-family: var(--serif);
+      font-size: 1.4rem;
+      color: var(--gold);
+      text-decoration: none;
+    }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a {
+      color: var(--text-subtle);
+      text-decoration: none;
+      font-size: 0.875rem;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--navy); }
+    .nav-cta {
+      background: var(--navy);
+      color: #ffffff !important;
+      padding: 0.45rem 1.1rem;
+      border-radius: 6px;
+      font-weight: 600 !important;
+      transition: background 0.2s !important;
+    }
+    .nav-cta:hover { background: var(--navy-mid) !important; }
+
+    .breadcrumb {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 1rem 2rem 0;
+      font-size: 0.8rem;
+      color: var(--text-subtle);
+    }
+    .breadcrumb a { color: var(--text-subtle); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--navy); }
+    .breadcrumb span { margin: 0 0.4rem; }
+
+    /* ── HERO ── */
+    .article-hero {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 3rem 2rem 2rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .article-tag {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #a07010;
+      background: rgba(212,160,48,0.1);
+      border: 1px solid rgba(212,160,48,0.3);
+      border-radius: 4px;
+      padding: 0.25rem 0.7rem;
+      margin-bottom: 1.2rem;
+    }
+    h1 {
+      font-family: var(--serif);
+      font-size: clamp(2rem, 4vw, 2.9rem);
+      line-height: 1.2;
+      color: var(--navy);
+      margin-bottom: 1.1rem;
+      max-width: 720px;
+    }
+    .article-meta {
+      font-size: 0.82rem;
+      color: var(--text-subtle);
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+    }
+    .article-meta strong { color: var(--text-muted); font-weight: 600; }
+
+    /* ── LAYOUT ── */
+    .article-layout {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      display: grid;
+      grid-template-columns: 1fr 260px;
+      gap: 4rem;
+      align-items: start;
+    }
+
+    /* ── BODY ── */
+    .article-body { padding: 3rem 0; min-width: 0; }
+    .article-body p { margin-bottom: 1.4rem; color: #2c3e60; font-size: 1.01rem; }
+    .article-body h2 {
+      font-family: var(--serif);
+      font-size: 1.65rem;
+      color: var(--navy);
+      margin: 2.8rem 0 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .article-body h3 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--gold);
+      margin: 2rem 0 0.6rem;
+    }
+    .article-body ul, .article-body ol {
+      margin: 0.5rem 0 1.4rem 1.4rem;
+      color: #2c3e60;
+    }
+    .article-body li { margin-bottom: 0.5rem; }
+    .article-body strong { color: var(--navy); font-weight: 600; }
+    .article-body a { color: var(--gold); text-decoration: none; border-bottom: 1px solid rgba(212,160,48,0.4); }
+    .article-body a:hover { border-color: var(--gold); color: var(--gold-light); }
+
+    /* callout */
+    .callout {
+      background: #f4f6fb;
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--gold);
+      border-radius: 0 8px 8px 0;
+      padding: 1.2rem 1.5rem;
+      margin: 2rem 0;
+    }
+    .callout p { margin-bottom: 0; font-size: 0.95rem; color: var(--text-muted); }
+    .callout strong { color: #a07010; }
+
+    /* measurements table */
+    .meas-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.5rem 0 2rem;
+      font-size: 0.875rem;
+    }
+    .meas-table th {
+      text-align: left;
+      padding: 0.65rem 1rem;
+      background: #f0f3fa;
+      color: var(--navy);
+      font-weight: 700;
+      font-size: 0.78rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      border-bottom: 2px solid var(--border);
+    }
+    .meas-table td {
+      padding: 0.65rem 1rem;
+      border-bottom: 1px solid #eaecf4;
+      color: #2c3e60;
+      vertical-align: top;
+    }
+    .meas-table tr:last-child td { border-bottom: none; }
+    .meas-table tr:hover td { background: #f8f9fd; }
+    .meas-table td:first-child { font-weight: 700; color: var(--navy); white-space: nowrap; }
+    .meas-table td:nth-child(3) { font-weight: 600; color: #a07010; }
+
+    /* ANB interpretation pills */
+    .anb-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      margin: 1.5rem 0 2rem;
+    }
+    .anb-card {
+      background: #f4f6fb;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1rem 1.2rem;
+      text-align: center;
+    }
+    .anb-card .anb-val {
+      font-family: var(--serif);
+      font-size: 1.4rem;
+      color: var(--navy);
+      display: block;
+      margin-bottom: 0.3rem;
+    }
+    .anb-card .anb-class {
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: #a07010;
+      margin-bottom: 0.4rem;
+      display: block;
+    }
+    .anb-card p {
+      font-size: 0.78rem;
+      color: var(--text-subtle);
+      margin: 0;
+      line-height: 1.5;
+    }
+
+    /* faq */
+    .faq-item { border-top: 1px solid var(--border); padding: 1.4rem 0; }
+    .faq-item:last-child { border-bottom: 1px solid var(--border); }
+    .faq-question { font-size: 1rem; font-weight: 600; color: var(--navy); margin-bottom: 0.6rem; }
+    .faq-answer { font-size: 0.93rem; color: #2c3e60; line-height: 1.7; }
+
+    /* bottom cta */
+    .bottom-cta {
+      background: var(--navy);
+      border: 1px solid rgba(212,160,48,0.25);
+      border-radius: 14px;
+      padding: 3rem;
+      margin: 3rem 0 1rem;
+      text-align: center;
+    }
+    .bottom-cta h2 {
+      font-family: var(--serif);
+      font-size: 1.8rem;
+      color: #ffffff;
+      margin-bottom: 0.8rem;
+      border: none;
+      padding: 0;
+    }
+    .bottom-cta p { color: #8fa3c4; margin-bottom: 1.8rem; max-width: 500px; margin-left: auto; margin-right: auto; }
+    .btn-lg {
+      display: inline-block;
+      background: var(--gold);
+      color: var(--navy);
+      font-weight: 700;
+      font-size: 1rem;
+      padding: 0.85rem 2.2rem;
+      border-radius: 8px;
+      text-decoration: none;
+      border: none;
+      transition: background 0.2s, transform 0.15s;
+    }
+    .btn-lg:hover { background: #e8b84b; transform: translateY(-2px); }
+    .sub-note { display: block; margin-top: 0.9rem; font-size: 0.78rem; color: #5a729a; }
+
+    /* ── SIDEBAR ── */
+    .sidebar { padding-top: 3rem; position: sticky; top: 80px; }
+    .toc-card, .sidebar-cta {
+      background: #f4f6fb;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.4rem;
+      margin-bottom: 1.5rem;
+    }
+    .toc-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.9rem;
+      display: block;
+    }
+    .toc-list { list-style: none; padding: 0; }
+    .toc-list li { border-top: 1px solid #e8ecf5; }
+    .toc-list li:first-child { border-top: none; }
+    .toc-list a {
+      display: block;
+      padding: 0.5rem 0;
+      font-size: 0.82rem;
+      color: var(--text-subtle);
+      text-decoration: none;
+      transition: color 0.2s;
+      line-height: 1.4;
+    }
+    .toc-list a:hover { color: var(--navy); }
+    .sidebar-cta {
+      background: var(--navy);
+      border-color: rgba(212,160,48,0.3);
+      text-align: center;
+    }
+    .sidebar-cta p { font-size: 0.85rem; color: #8fa3c4; margin-bottom: 1rem; line-height: 1.6; }
+    .btn-primary {
+      display: inline-block;
+      background: var(--gold);
+      color: var(--navy);
+      font-weight: 700;
+      font-size: 0.875rem;
+      padding: 0.65rem 1.4rem;
+      border-radius: 7px;
+      text-decoration: none;
+      border: none;
+      transition: background 0.2s, transform 0.15s;
+      width: 100%;
+      text-align: center;
+    }
+    .btn-primary:hover { background: #e8b84b; transform: translateY(-1px); }
+    .related-links { list-style: none; padding: 0; }
+    .related-links li { border-top: 1px solid #e8ecf5; }
+    .related-links li:first-child { border-top: none; }
+    .related-links a {
+      display: block;
+      padding: 0.5rem 0;
+      font-size: 0.82rem;
+      color: var(--text-subtle);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .related-links a:hover { color: var(--navy); }
+
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2rem;
+      text-align: center;
+      font-size: 0.8rem;
+      color: var(--text-subtle);
+      background: #f4f6fb;
+    }
+    footer a { color: var(--text-subtle); text-decoration: none; }
+    footer a:hover { color: var(--navy); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 760px) {
+      .article-layout { grid-template-columns: 1fr; gap: 0; }
+      .sidebar { position: static; padding-top: 0; }
+      .toc-card { display: none; }
+      .anb-grid { grid-template-columns: 1fr; }
+      .nav-links { display: none; }
+      .bottom-cta { padding: 2rem 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── NAV ── -->
+  <nav>
+    <div class="nav-inner">
+      <a href="https://www.bceph.com" class="nav-logo">BCeph</a>
+      <ul class="nav-links">
+        <li><a href="https://www.bceph.com/#features">Features</a></li>
+        <li><a href="https://www.bceph.com/#analyses">Analyses</a></li>
+        <li><a href="https://www.bceph.com/cephalometric-analysis">Ceph Guide</a></li>
+        <li><a href="https://www.bceph.com/app.html" class="nav-cta">Launch App →</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ── BREADCRUMB ── -->
+  <div class="breadcrumb">
+    <a href="https://www.bceph.com">BCeph</a>
+    <span>›</span>
+    <a href="https://www.bceph.com/cephalometric-analysis">Cephalometric Analysis</a>
+    <span>›</span>
+    Steiner Analysis
+  </div>
+
+  <!-- ── HERO ── -->
+  <header class="article-hero">
+    <div class="article-tag">Analysis Deep-Dive</div>
+    <h1>Steiner Analysis: A Complete Cephalometric Guide</h1>
+    <div class="article-meta">
+      <span>By <strong>Bayan Healthcare Analytics</strong></span>
+      <span>·</span>
+      <span>~8 min read</span>
+      <span>·</span>
+      <span>SNA · SNB · ANB · U1–NA · L1–NB · Interincisal Angle</span>
+    </div>
+  </header>
+
+  <!-- ── LAYOUT ── -->
+  <div class="article-layout">
+    <main class="article-body" id="main-content">
+
+      <!-- 1. History -->
+      <section id="history">
+        <h2>History and Origins of the Steiner Analysis</h2>
+        <p>
+          The Steiner analysis was introduced by <strong>Cecil C. Steiner</strong> in a landmark 1953 paper in the <em>American Journal of Orthodontics</em>. Steiner's goal was practical: create a cephalometric framework that a clinician could apply chairside, using a small number of meaningful measurements to characterise facial morphology and guide treatment planning. His analysis built on the earlier work of Downs (1948) but replaced the Frankfort Horizontal with the <strong>Sella-Nasion (SN) plane</strong> as the primary reference — a choice that proved highly reproducible and clinically durable.
+        </p>
+        <p>
+          More than seven decades later, Steiner analysis remains the most universally taught cephalometric analysis in orthodontic education globally. Its SNA, SNB, and ANB measurements are part of the clinical vocabulary of every orthodontist, and ANB in particular has become the shorthand for sagittal jaw classification in both clinical practice and research.
+        </p>
+      </section>
+
+      <!-- 2. SN Plane -->
+      <section id="sn-plane">
+        <h2>The SN Plane: Why It Works as a Reference</h2>
+        <p>
+          The SN plane connects <strong>Sella (S)</strong> — the geometric centre of the pituitary fossa — to <strong>Nasion (N)</strong>, the most anterior point of the frontonasal suture. This line approximates the anterior cranial base and has two properties that make it a reliable cephalometric reference:
+        </p>
+        <ul>
+          <li><strong>Reproducibility:</strong> Both S and N are clearly identifiable on a lateral cephalogram with low inter-operator variability.</li>
+          <li><strong>Growth stability:</strong> The anterior cranial base completes most of its growth early in development, making SN a relatively stable reference across serial records in adolescent patients.</li>
+        </ul>
+        <p>
+          All angular measurements in the Steiner analysis are expressed as deviations from — or in relation to — this SN baseline, giving the analysis an internal geometric consistency that makes clinical comparisons straightforward.
+        </p>
+
+        <div class="callout">
+          <p><strong>Known limitation:</strong> SN plane inclination varies between individuals. A steep SN plane artificially increases SNA and SNB readings; a flat SN plane decreases them. When SNA or SNB falls significantly outside the norm, clinicians should verify SN plane inclination before drawing skeletal conclusions — or supplement with a Frankfort-referenced analysis such as <a href="https://www.bceph.com/cephalometric-analysis">Downs or Ricketts</a>.</p>
+        </div>
+      </section>
+
+      <!-- 3. Skeletal Measurements -->
+      <section id="skeletal">
+        <h2>Skeletal Measurements: SNA, SNB, and ANB</h2>
+        <p>
+          The three skeletal measurements of the Steiner analysis define the sagittal positions of the maxilla and mandible relative to the cranial base, and their relationship to each other.
+        </p>
+
+        <table class="meas-table">
+          <thead>
+            <tr>
+              <th>Measurement</th>
+              <th>Definition</th>
+              <th>Norm</th>
+              <th>Clinical meaning</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>SNA</td>
+              <td>Angle at Nasion between lines S–N and N–A</td>
+              <td>82° ± 2°</td>
+              <td>Maxillary prognathism relative to cranial base. &gt;84° = prognathic maxilla; &lt;80° = retrognathic maxilla.</td>
+            </tr>
+            <tr>
+              <td>SNB</td>
+              <td>Angle at Nasion between lines S–N and N–B</td>
+              <td>80° ± 2°</td>
+              <td>Mandibular prognathism relative to cranial base. &gt;82° = prognathic mandible; &lt;78° = retrognathic mandible.</td>
+            </tr>
+            <tr>
+              <td>ANB</td>
+              <td>Arithmetic difference: SNA − SNB</td>
+              <td>2° ± 2°</td>
+              <td>Sagittal jaw relationship. The primary Class I/II/III skeletal classifier in the Steiner system.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>Interpreting the ANB Angle</h3>
+        <p>
+          ANB is the most clinically consequential measurement in the Steiner analysis. It represents the sagittal discrepancy between the maxillary and mandibular apical bases and directly informs the skeletal classification of the malocclusion:
+        </p>
+
+        <div class="anb-grid">
+          <div class="anb-card">
+            <span class="anb-val">0° – 4°</span>
+            <span class="anb-class">Skeletal Class I</span>
+            <p>Normal sagittal jaw relationship. Malocclusion, if present, is primarily dental in origin.</p>
+          </div>
+          <div class="anb-card">
+            <span class="anb-val">&gt; 4°</span>
+            <span class="anb-class">Skeletal Class II</span>
+            <p>Maxilla is positioned anteriorly relative to the mandible, or mandible is retrognathic. Degree of severity scales with ANB magnitude.</p>
+          </div>
+          <div class="anb-card">
+            <span class="anb-val">&lt; 0°</span>
+            <span class="anb-class">Skeletal Class III</span>
+            <p>Mandible positioned anteriorly relative to the maxilla, or maxilla retrognathic. Negative values indicate increasing severity.</p>
+          </div>
+        </div>
+
+        <div class="callout">
+          <p><strong>ANB is a derived value — treat it carefully.</strong> ANB inherits the limitations of both SNA and SNB. A high ANB can result from a prognathic maxilla, a retrognathic mandible, or both. Always read SNA and SNB individually before interpreting ANB. For equivocal cases, supplement with the <strong>Wits appraisal</strong> — a perpendicular measurement to the occlusal plane that is independent of cranial base inclination. BCeph computes both in the same session.</p>
+        </div>
+      </section>
+
+      <!-- 4. Dental Measurements -->
+      <section id="dental">
+        <h2>Dental Measurements</h2>
+        <p>
+          Beyond skeletal classification, the Steiner analysis characterises the position and angulation of the upper and lower incisors — critical for treatment planning, extraction decisions, and incisor torque prescriptions.
+        </p>
+
+        <table class="meas-table">
+          <thead>
+            <tr>
+              <th>Measurement</th>
+              <th>Definition</th>
+              <th>Norm</th>
+              <th>Clinical significance</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>U1–NA°</td>
+              <td>Angle of upper incisor long axis to line N–A</td>
+              <td>22° ± 2°</td>
+              <td>Upper incisor proclination. &gt;24° = proclined; &lt;20° = retroclined.</td>
+            </tr>
+            <tr>
+              <td>U1–NA mm</td>
+              <td>Distance from upper incisor tip to line N–A</td>
+              <td>4 mm ± 2 mm</td>
+              <td>Upper incisor horizontal protrusion. Complements the angular measurement.</td>
+            </tr>
+            <tr>
+              <td>L1–NB°</td>
+              <td>Angle of lower incisor long axis to line N–B</td>
+              <td>25° ± 2°</td>
+              <td>Lower incisor proclination. Drives lower arch extraction and torque decisions.</td>
+            </tr>
+            <tr>
+              <td>L1–NB mm</td>
+              <td>Distance from lower incisor tip to line N–B</td>
+              <td>4 mm ± 2 mm</td>
+              <td>Lower incisor protrusion. Compare with Holdaway's Pg–NB for chin prominence context.</td>
+            </tr>
+            <tr>
+              <td>Interincisal Angle</td>
+              <td>Angle between long axes of U1 and L1</td>
+              <td>131° ± 6°</td>
+              <td>Overall incisor relationship. &lt;125° suggests dual proclination; &gt;137° suggests dual retroclination.</td>
+            </tr>
+            <tr>
+              <td>Pg–NB mm</td>
+              <td>Perpendicular distance from Pogonion to line N–B</td>
+              <td>1–4 mm</td>
+              <td>Chin prominence. Steiner noted that Pg–NB and L1–NB distance should be approximately equal in a well-balanced face.</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- 5. Treatment Planning -->
+      <section id="treatment-planning">
+        <h2>How Steiner Analysis Guides Treatment Planning</h2>
+
+        <h3>Skeletal vs. Dental Aetiology</h3>
+        <p>
+          The most important treatment planning decision the Steiner analysis informs is whether a malocclusion is <strong>skeletal</strong> (jaw position discrepancy) or <strong>dental</strong> (tooth position on a normal skeletal base). A Class II molar relationship with a normal ANB of 2° suggests dental Class II — amenable to mechanics alone. The same molar relationship with ANB of 7° indicates a skeletal Class II requiring growth modification in a growing patient or orthognathic surgical consideration in an adult.
+        </p>
+
+        <h3>Incisor Position and the Extraction Decision</h3>
+        <p>
+          Steiner's incisor measurements directly feed the extraction versus non-extraction decision. Proclined lower incisors (L1–NB above 27°) in a crowded arch suggest that extraction space may allow beneficial retroclination. Conversely, retroclined incisors (L1–NB below 23°) in a borderline case argue against extraction — further retroclination risks compromising the lip profile and airway volume. The interincisal angle provides an additional check: post-treatment, the target is typically 131° ± 6° with coordinated U1 and L1 positions.
+        </p>
+
+        <h3>Steiner's Compromise Concept</h3>
+        <p>
+          Steiner himself introduced the concept of <strong>acceptable compromises</strong> — recognising that a patient presenting with ANB of 6° cannot always be treated to an ANB of 2°. He developed tables of acceptable incisor positions corresponding to each ANB value, allowing the clinician to plan a realistic tooth position outcome given a non-ideal skeletal base. BCeph's Steiner report displays both the normative value and the patient's actual deviation, giving the clinician the data needed to apply this reasoning directly.
+        </p>
+      </section>
+
+      <!-- 6. Limitations -->
+      <section id="limitations">
+        <h2>Limitations and When to Supplement Steiner Analysis</h2>
+        <p>
+          Despite its clinical ubiquity, Steiner analysis has recognised limitations that practitioners should account for:
+        </p>
+        <ul>
+          <li><strong>SN plane variation.</strong> Individual differences in SN inclination introduce systematic bias into SNA, SNB, and ANB. In patients with steep or flat cranial bases, Frankfort-referenced analyses (Ricketts, Downs) should be used to cross-check skeletal findings.</li>
+          <li><strong>No vertical component.</strong> Steiner analysis does not directly assess vertical skeletal relationships — the mandibular plane angle, lower facial height proportion, or hypodivergent/hyperdivergent pattern. Supplement with Björk-Jarabak or the FMA from the Tweed triangle for vertical diagnosis.</li>
+          <li><strong>No soft-tissue measurements.</strong> Beyond the Pg–NB value, Steiner provides no direct soft-tissue assessment. The Holdaway analysis, E-Line (Ricketts), or H-Line provide the lip and profile measurements needed for complete treatment planning.</li>
+          <li><strong>Population norm origin.</strong> Steiner's original normative values were derived from a small white Western sample. For patients of other ancestries, supplement with population-specific norms.</li>
+        </ul>
+        <p>
+          <a href="https://www.bceph.com/app.html">BCeph</a> addresses all four of these limitations by running Steiner alongside Ricketts, Björk-Jarabak, Holdaway, and eight other analysis modules from a single set of landmarks — so the full clinical picture is available in one session.
+        </p>
+      </section>
+
+      <!-- 7. FAQ -->
+      <section id="faq">
+        <h2>Frequently Asked Questions</h2>
+
+        <div class="faq-item">
+          <div class="faq-question">What is Steiner analysis in cephalometrics?</div>
+          <div class="faq-answer">Steiner analysis is a cephalometric analysis system developed by Cecil Steiner in 1953 using the Sella-Nasion (SN) plane as its primary reference. It measures skeletal jaw positions (SNA, SNB, ANB), incisor angulations (U1–NA, L1–NB), and the interincisal angle to diagnose malocclusion and guide orthodontic treatment planning.</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question">What is the ANB angle in Steiner analysis?</div>
+          <div class="faq-answer">ANB is the difference between SNA and SNB — representing the sagittal relationship between the maxillary and mandibular apical bases. The norm is 2° (±2°). ANB above 4° indicates a skeletal Class II tendency; below 0° indicates a skeletal Class III tendency.</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question">What are the normal values for SNA and SNB?</div>
+          <div class="faq-answer">Steiner normative values are SNA = 82° (±2°) and SNB = 80° (±2°). SNA reflects maxillary prognathism relative to the anterior cranial base; SNB reflects mandibular prognathism. Values outside ±2° from the norm indicate skeletal discrepancy requiring clinical interpretation.</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question">What dental measurements does Steiner analysis include?</div>
+          <div class="faq-answer">Steiner analysis includes U1–NA angle (norm 22°) and distance (norm 4 mm) for upper incisor position; L1–NB angle (norm 25°) and distance (norm 4 mm) for lower incisor position; interincisal angle (norm 131°); and the Pg–NB distance for chin prominence assessment.</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question">Is there free Steiner analysis software?</div>
+          <div class="faq-answer">Yes. <a href="https://www.bceph.com">BCeph</a> is a free, browser-based cephalometric tool with a full Steiner analysis module alongside 8 other analysis systems. No installation, no subscription, no cloud upload. All patient data stays on your device.</div>
+        </div>
+      </section>
+
+      <!-- ── BOTTOM CTA ── -->
+      <div class="bottom-cta">
+        <h2>Run a Steiner Analysis Free — Right Now</h2>
+        <p>Upload your lateral cephalogram, place landmarks once, and get a complete Steiner analysis — SNA, SNB, ANB, incisor measurements, and a print-ready PDF report. Plus 8 other analyses from the same landmark set.</p>
+        <a href="https://www.bceph.com/app.html" class="btn-lg">Launch BCeph Free →</a>
+        <span class="sub-note">No installation · No subscription · All data stays on your device</span>
+      </div>
+
+    </main>
+
+    <!-- ── SIDEBAR ── -->
+    <aside class="sidebar">
+
+      <div class="toc-card">
+        <span class="toc-label">In this guide</span>
+        <ul class="toc-list">
+          <li><a href="#history">History and origins</a></li>
+          <li><a href="#sn-plane">The SN plane</a></li>
+          <li><a href="#skeletal">Skeletal: SNA, SNB, ANB</a></li>
+          <li><a href="#dental">Dental measurements</a></li>
+          <li><a href="#treatment-planning">Treatment planning</a></li>
+          <li><a href="#limitations">Limitations</a></li>
+          <li><a href="#faq">FAQ</a></li>
+        </ul>
+      </div>
+
+      <div class="sidebar-cta">
+        <p>Run Steiner, Ricketts, McNamara and 6+ more analyses — free, browser-based, private.</p>
+        <a href="https://www.bceph.com/app.html" class="btn-primary">Launch BCeph →</a>
+      </div>
+
+      <div class="toc-card">
+        <span class="toc-label">Related guides</span>
+        <ul class="related-links">
+          <li><a href="https://www.bceph.com/cephalometric-analysis">Cephalometric Analysis — Overview</a></li>
+          <li><a href="https://www.bceph.com/mcnamara-analysis">McNamara Analysis Guide</a></li>
+          <li><a href="https://www.bceph.com/dolphin-imaging-alternative">Dolphin Imaging Alternatives</a></li>
+          <li><a href="https://www.bceph.com/browser-based-cephalometric-analysis">Browser-Based Ceph Tools</a></li>
+        </ul>
+      </div>
+
+    </aside>
+  </div>
+
+  <!-- ── FOOTER ── -->
+  <footer>
+    <p>
+      <a href="https://www.bceph.com">BCeph</a> ·
+      <a href="https://www.bceph.com/cephalometric-analysis">Cephalometric Analysis</a> ·
+      <a href="https://www.bceph.com/steiner-analysis">Steiner Analysis</a> ·
+      Built by <a href="https://www.bceph.com">Bayan Healthcare Analytics</a>
+    </p>
+    <p style="margin-top:0.5rem">© 2026 Bayan Healthcare Analytics. BCeph is a free clinical tool — not a substitute for specialist clinical judgment.</p>
+  </footer>
+
+</body>
+</html>
