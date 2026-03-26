@@ -199,6 +199,72 @@ html,body{font-family:var(--font);font-size:13px;overflow-x:hidden;background:#f
 .footer-ig svg{stroke:#ff2d8a;}
 .footer-ig:hover svg{stroke:#ff5fa8;}
 </style>
+
+<!-- ── Structured Data (JSON-LD) ── -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "BCeph",
+  "applicationCategory": "MedicalApplication",
+  "operatingSystem": "Web Browser",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "description": "AI-powered cephalometric analysis for orthodontists. Automatic landmark tracing, Steiner, Ricketts, and McNamara analyses. Free, Free.",
+  "url": "https://www.bceph.com",
+  "author": { "@type": "Organization", "name": "Bayan Healthcare Analytics" },
+  "screenshot": "https://www.bceph.com/og-preview.png",
+  "featureList": "AI landmark tracing, Steiner analysis, Ricketts analysis, McNamara analysis, Downs analysis, Tweed analysis, clinical report generation, image enhancement, patient database, JSON backup/restore",
+  "softwareVersion": "1.0-beta"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Is BCeph free?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. BCeph is completely free with no hidden fees, subscriptions, or premium tiers."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does BCeph store patient data on the cloud?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. All images, landmarks, and patient records stay in your browser's local storage. Nothing is uploaded or transmitted."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Which cephalometric analyses does BCeph support?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "BCeph includes Steiner, Ricketts, McNamara, Downs, Tweed, Jarabak, and additional soft-tissue and airway modules — over 9 analyses total."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is BCeph HIPAA compliant?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "BCeph is architected around HIPAA principles. Since no patient data ever leaves your device, there is no PHI transmission and no need for a Business Associate Agreement."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Do I need to install anything?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. BCeph runs entirely in your web browser as a single HTML file. No downloads, plugins, or accounts required."
+      }
+    }
+  ]
+}
+</script>
 </head>
 <body>
 
@@ -420,70 +486,5 @@ html,body{font-family:var(--font);font-size:13px;overflow-x:hidden;background:#f
   </div>
 </footer>
 
-<!-- ── Structured Data (JSON-LD) ── -->
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "SoftwareApplication",
-  "name": "BCeph",
-  "applicationCategory": "MedicalApplication",
-  "operatingSystem": "Web Browser",
-  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
-  "description": "AI-powered cephalometric analysis for orthodontists. Automatic landmark tracing, Steiner, Ricketts, and McNamara analyses. Free, Free.",
-  "url": "https://www.bceph.com",
-  "author": { "@type": "Organization", "name": "Bayan Healthcare Analytics" },
-  "screenshot": "https://www.bceph.com/og-preview.png",
-  "featureList": "AI landmark tracing, Steiner analysis, Ricketts analysis, McNamara analysis, Downs analysis, Tweed analysis, clinical report generation, image enhancement, patient database, JSON backup/restore",
-  "softwareVersion": "1.0-beta"
-}
-</script>
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": [
-    {
-      "@type": "Question",
-      "name": "Is BCeph free?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Yes. BCeph is completely free with no hidden fees, subscriptions, or premium tiers."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Does BCeph store patient data on the cloud?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "No. All images, landmarks, and patient records stay in your browser's local storage. Nothing is uploaded or transmitted."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Which cephalometric analyses does BCeph support?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "BCeph includes Steiner, Ricketts, McNamara, Downs, Tweed, Jarabak, and additional soft-tissue and airway modules — over 9 analyses total."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Is BCeph HIPAA compliant?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "BCeph is architected around HIPAA principles. Since no patient data ever leaves your device, there is no PHI transmission and no need for a Business Associate Agreement."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Do I need to install anything?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "No. BCeph runs entirely in your web browser as a single HTML file. No downloads, plugins, or accounts required."
-      }
-    }
-  ]
-}
-</script>
 <script>
 (func
