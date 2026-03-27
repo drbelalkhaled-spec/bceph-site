@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tweed Analysis: FMA, FMIA & IMPA Explained | BCeph Orthodontic Guide</title>
+<meta name="description" content="A complete clinical guide to Tweed Triangle analysis in orthodontics. Learn the three angles — FMA, FMIA, and IMPA — their norms, landmarks, and how to use Tweed analysis for treatment planning. Free to run in BCeph.">
+<link rel="canonical" href="https://www.bceph.com/tweed-analysis">
+<meta property="og:title" content="Tweed Analysis Guide: FMA, FMIA & IMPA — Norms, Landmarks & Clinical Use">
+<meta property="og:description" content="Everything orthodontists need to know about Tweed Triangle cephalometric analysis. FMA, FMIA, IMPA norms, landmarks, extraction decisions, and how to run it free in BCeph.">
+<meta property="og:url" content="https://www.bceph.com/tweed-analysis">
+<meta property="og:type" content="article">
+<meta property="og:image" content="https://www.bceph.com/og-preview.png">
+<meta property="og:site_name" content="BCeph">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/favicon.ico" sizes="any">
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<!-- Article + FAQ + Breadcrumb Schema -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.bceph.com/" },
+        { "@type": "ListItem", "position": 2, "name": "Tweed Analysis", "item": "https://www.bceph.com/tweed-analysis" }
+      ]
+    },
+    {
+      "@type": "Article",
+      "headline": "Tweed Analysis: FMA, FMIA and IMPA Explained for Orthodontists",
+      "description": "A comprehensive clinical guide to the Tweed Triangle cephalometric analysis, covering the three angles (FMA, FMIA, IMPA), their norms, landmarks, clinical interpretation, and use in extraction decision-making.",
+      "author": {
+        "@type": "Organization",
+        "name": "Bayan Healthcare Analytics",
+        "url": "https://www.bceph.com"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "BCeph",
+        "url": "https://www.bceph.com"
+      },
+      "datePublished": "2026-03-27",
+      "dateModified": "2026-03-27",
+      "mainEntityOfPage": "https://www.bceph.com/tweed-analysis",
+      "image": "https://www.bceph.com/og-preview.png"
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What are the normal values for FMA, FMIA, and IMPA in Tweed analysis?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Tweed's ideal norms are: FMA (Frankfort-Mandibular Plane Angle) = 25°, FMIA (Frankfort-Mandibular Incisor Angle) = 65°, and IMPA (Incisor-Mandibular Plane Angle) = 90°. The three angles always sum to 180°. A clinical range of ±5° is generally accepted for each measurement."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What does a high FMA mean clinically?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "A high FMA (above 30°) indicates a hyperdivergent skeletal pattern with a steep mandibular plane. These patients tend to have an anterior open bite tendency, a long lower face height, and are less tolerant of proclination of the lower incisors. Extraction is more commonly indicated in high FMA cases to allow lower incisor retraction and uprighting."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is the Tweed Triangle and why does it matter?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The Tweed Triangle is a geometric construct formed by three intersecting lines on a lateral cephalogram: the Frankfort Horizontal plane, the mandibular plane, and the long axis of the lower incisor. The three angles they create — FMA, FMIA, and IMPA — always sum to 180°, which means changing one affects the others. Tweed used this interdependency to define the lower incisor position needed for facial balance and long-term stability."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How does Tweed analysis inform extraction decisions?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Tweed proposed that an FMIA of 65° represents the ideal lower incisor position. If achieving this goal requires significantly retracting the lower incisors, extraction of lower premolars is generally indicated. The FMA is used as the diagnostic anchor: in high FMA cases (above 30°), the target FMIA is adjusted upward, making extraction more likely; in low FMA cases (below 20°), more proclination is acceptable."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I run Tweed analysis for free?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. BCeph includes Tweed Triangle analysis (FMA, FMIA, IMPA) as a free built-in module alongside Steiner, Ricketts, McNamara, Eastman, Downs, Björk-Jarabak, Holdaway, Kim, and Wits analyses. It runs entirely in the browser with no installation and no cloud upload of patient data."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+
+<style>
+  /* ── VARIABLES ── */
+  :root {
+    --navy: #152242;
+    --navy-deep: #0e1a38;
+    --navy-card: #1a2d4d;
+    --gold: #D4A030;
+    --gold-dim: rgba(212, 160, 48, 0.15);
+    --gold-glow: rgba(212, 160, 48, 0.08);
+    --text-primary: rgba(255,255,255,0.92);
+    --text-secondary: rgba(255,255,255,0.55);
+    --text-muted: rgba(255,255,255,0.35);
+    --border: rgba(255,255,255,0.06);
+    --font-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-display: 'DM Serif Display', Georgia, serif;
+  }
+
+  /* ── RESET ── */
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--font-body);
+    background: var(--navy);
+    color: var(--text-primary);
+    line-height: 1.7;
+    font-size: 15px;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--gold); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  img { max-width: 100%; display: block; }
+
+  /* ── NAV ── */
+  .site-nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(14, 26, 56, 0.96);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+  }
+  .nav-inner {
+    max-width: 960px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+  }
+  .nav-logo {
+    font-family: var(--font-display);
+    font-size: 1.4rem;
+    color: var(--gold);
+    text-decoration: none;
+  }
+  .nav-logo:hover { text-decoration: none; }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a {
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: #fff; text-decoration: none; }
+  .nav-cta {
+    background: var(--gold) !important;
+    color: var(--navy-deep) !important;
+    padding: 0.45rem 1.1rem;
+    border-radius: 6px;
+    font-weight: 700 !important;
+    transition: background 0.2s !important;
+  }
+  .nav-cta:hover { background: #e0ad35 !important; }
+
+  /* ── BREADCRUMB ── */
+  .breadcrumb {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 24px 32px 0;
+    font-size: 12px;
+    color: var(--text-muted);
+    letter-spacing: 0.3px;
+  }
+  .breadcrumb a { color: var(--text-muted); }
+  .breadcrumb a:hover { color: var(--gold); }
+  .breadcrumb span { margin: 0 6px; opacity: 0.4; }
+
+  /* ── HERO ── */
+  .hero {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 48px 32px 56px;
+    border-bottom: 1px solid var(--border);
+  }
+  .hero-label {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--gold);
+    background: var(--gold-dim);
+    border: 1px solid rgba(212,160,48,0.2);
+    border-radius: 5px;
+    padding: 5px 12px;
+    margin-bottom: 20px;
+  }
+  .hero h1 {
+    font-family: var(--font-display);
+    font-size: clamp(28px, 5vw, 40px);
+    font-weight: 400;
+    line-height: 1.2;
+    color: #fff;
+    margin-bottom: 20px;
+  }
+  .hero h1 em {
+    font-style: italic;
+    color: var(--gold);
+  }
+  .hero-subtitle {
+    font-size: 15px;
+    color: var(--text-secondary);
+    max-width: 620px;
+    line-height: 1.75;
+  }
+  .hero-meta {
+    margin-top: 24px;
+    font-size: 11px;
+    color: var(--text-muted);
+    letter-spacing: 0.3px;
+  }
+  .hero-meta time { color: var(--text-secondary); }
+
+  /* ── ARTICLE BODY ── */
+  .article {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 0 32px;
+  }
+  .article section {
+    padding: 48px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .article section:last-child { border-bottom: none; }
+  .article h2 {
+    font-family: var(--font-display);
+    font-size: clamp(22px, 3.5vw, 28px);
+    font-weight: 400;
+    color: #fff;
+    margin-bottom: 20px;
+    line-height: 1.25;
+  }
+  .article h3 {
+    font-size: 17px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 12px;
+    margin-top: 32px;
+  }
+  .article h3:first-child { margin-top: 0; }
+  .article p {
+    color: var(--text-secondary);
+    margin-bottom: 16px;
+    line-height: 1.8;
+    font-size: 15px;
+  }
+  .article p:last-child { margin-bottom: 0; }
+  .article strong { color: var(--text-primary); font-weight: 600; }
+
+  /* ── NORMS TABLE ── */
+  .table-wrap {
+    overflow-x: auto;
+    margin: 24px 0 8px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    background: var(--navy-deep);
+    -webkit-overflow-scrolling: touch;
+  }
+  .norms-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+  .norms-table thead th {
+    background: rgba(212,160,48,0.08);
+    color: var(--gold);
+    font-size: 10px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    padding: 14px 20px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+  }
+  .norms-table tbody td {
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text-secondary);
+    vertical-align: middle;
+    line-height: 1.6;
+  }
+  .norms-table tbody tr:last-child td { border-bottom: none; }
+  .norms-table tbody tr:hover td { background: rgba(255,255,255,0.02); }
+  .norms-table .measure-name {
+    font-weight: 700;
+    color: var(--text-primary);
+    white-space: nowrap;
+  }
+  .norms-table .norm-val {
+    font-weight: 700;
+    color: var(--gold);
+    font-size: 14px;
+  }
+  .tag-high {
+    display: inline-block;
+    background: rgba(239,113,39,0.12);
+    color: #f97316;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 4px;
+  }
+  .tag-low {
+    display: inline-block;
+    background: rgba(99,179,237,0.12);
+    color: #60a5fa;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 4px;
+  }
+  .tag-normal {
+    display: inline-block;
+    background: rgba(52,211,153,0.12);
+    color: #34d399;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 4px;
+  }
+
+  /* ── ANGLE CARDS ── */
+  .angle-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-top: 28px;
+  }
+  @media (max-width: 580px) {
+    .angle-grid { grid-template-columns: 1fr; }
+  }
+  .angle-card {
+    background: var(--navy-deep);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px 24px;
+    text-align: center;
+    transition: border-color 0.2s ease;
+  }
+  .angle-card:hover { border-color: rgba(212,160,48,0.2); }
+  .angle-abbr {
+    font-family: var(--font-display);
+    font-size: 2rem;
+    color: var(--gold);
+    margin-bottom: 6px;
+    line-height: 1;
+  }
+  .angle-norm {
+    font-size: 22px;
+    font-weight: 800;
+    color: #fff;
+    margin-bottom: 10px;
+  }
+  .angle-label {
+    font-size: 12px;
+    color: var(--text-muted);
+    letter-spacing: 0.3px;
+    margin-bottom: 14px;
+    line-height: 1.5;
+  }
+  .angle-desc {
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.7;
+    text-align: left;
+  }
+
+  /* ── LANDMARK BLOCKS ── */
+  .landmark-block {
+    background: var(--navy-deep);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px 32px;
+    margin-top: 20px;
+  }
+  .landmark-block h3 {
+    margin-top: 0;
+    margin-bottom: 16px;
+    font-size: 16px;
+  }
+  .landmark-block p { font-size: 14px; }
+  .landmark-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 16px;
+  }
+  .landmark-item {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+  }
+  .lm-code {
+    font-size: 11px;
+    font-weight: 800;
+    color: var(--gold);
+    background: var(--gold-dim);
+    border: 1px solid rgba(212,160,48,0.2);
+    border-radius: 5px;
+    padding: 3px 9px;
+    flex-shrink: 0;
+    margin-top: 1px;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+  }
+  .lm-text {
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.7;
+  }
+  .lm-text strong { color: var(--text-primary); }
+
+  /* ── CLINICAL CALLOUT ── */
+  .clinical-note {
+    margin-top: 24px;
+    padding: 20px 24px;
+    background: var(--gold-glow);
+    border-left: 3px solid var(--gold);
+    border-radius: 0 10px 10px 0;
+    font-size: 14px;
+    color: var(--text-secondary);
+    line-height: 1.8;
+  }
+  .clinical-note strong { color: var(--gold); }
+
+  /* ── FMA PATTERN GRID ── */
+  .pattern-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-top: 24px;
+  }
+  @media (max-width: 580px) {
+    .pattern-grid { grid-template-columns: 1fr; }
+  }
+  .pattern-card {
+    background: var(--navy-deep);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 22px 20px;
+  }
+  .pattern-card h4 {
+    font-size: 13px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .pattern-card p {
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.7;
+    margin-bottom: 0;
+  }
+
+  /* ── FAQ ── */
+  .faq-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: 24px;
+  }
+  .faq-item {
+    background: var(--navy-deep);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px 28px;
+    transition: border-color 0.2s ease;
+  }
+  .faq-item:hover { border-color: rgba(212,160,48,0.2); }
+  .faq-q {
+    font-size: 14px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  .faq-q::before {
+    content: "Q";
+    font-size: 9px;
+    font-weight: 800;
+    color: var(--gold);
+    background: var(--gold-dim);
+    border: 1px solid rgba(212,160,48,0.2);
+    border-radius: 5px;
+    padding: 3px 7px;
+    flex-shrink: 0;
+    margin-top: 1px;
+    letter-spacing: 0.5px;
+  }
+  .faq-a {
+    font-size: 14px;
+    color: var(--text-secondary);
+    line-height: 1.8;
+    padding-left: 36px;
+  }
+
+  /* ── CTA BANNER ── */
+  .cta-banner {
+    text-align: center;
+    padding: 64px 32px;
+    border-top: 1px solid var(--border);
+  }
+  .cta-banner h2 {
+    font-family: var(--font-display);
+    font-size: clamp(24px, 4vw, 32px);
+    color: #fff;
+    margin-bottom: 12px;
+  }
+  .cta-banner p {
+    color: var(--text-secondary);
+    font-size: 15px;
+    margin-bottom: 28px;
+    max-width: 480px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .btn-launch {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--gold);
+    color: var(--navy-deep);
+    font-weight: 700;
+    font-size: 14px;
+    padding: 14px 32px;
+    border-radius: 8px;
+    letter-spacing: 0.3px;
+    transition: background 0.2s ease, transform 0.15s ease;
+  }
+  .btn-launch:hover {
+    background: #e0ad35;
+    text-decoration: none;
+    transform: translateY(-1px);
+  }
+  .btn-launch .arrow { font-size: 16px; }
+
+  /* ── FOOTER ── */
+  .site-footer {
+    background: var(--navy-deep);
+    padding: 24px 32px;
+    text-align: center;
+    font-size: 11px;
+    color: var(--text-muted);
+    letter-spacing: 0.4px;
+    border-top: 1px solid var(--border);
+  }
+  .site-footer a { color: var(--text-muted); }
+  .site-footer a:hover { color: var(--gold); }
+  .site-footer strong { color: rgba(212,160,48,0.5); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 640px) {
+    .nav-links { display: none; }
+    .hero { padding: 36px 20px 40px; }
+    .article { padding: 0 20px; }
+    .article section { padding: 36px 0; }
+    .landmark-block { padding: 22px 20px; }
+    .breadcrumb { padding: 20px 20px 0; }
+    .cta-banner { padding: 48px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav class="site-nav">
+  <div class="nav-inner">
+    <a href="https://www.bceph.com" class="nav-logo"><span style="color:var(--gold)">B</span><span style="color:#fff">Ceph</span></a>
+    <ul class="nav-links">
+      <li><a href="https://www.bceph.com/#features">Features</a></li>
+      <li><a href="https://www.bceph.com/#analyses">Analyses</a></li>
+      <li><a href="https://www.bceph.com/cephalometric-analysis">Ceph Guide</a></li>
+      <li><a href="https://www.bceph.com/app.html" class="nav-cta">Launch App →</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ── BREADCRUMB ── -->
+<nav class="breadcrumb" aria-label="Breadcrumb">
+  <a href="/">BCeph</a><span>›</span><span>Tweed Analysis</span>
+</nav>
+
+<!-- ── HERO ── -->
+<header class="hero">
+  <div class="hero-label">Clinical Analysis Guide</div>
+  <h1>Tweed Analysis: <em>FMA, FMIA & IMPA Explained</em></h1>
+  <p class="hero-subtitle">The Tweed Triangle is one of orthodontics' most enduring diagnostic frameworks. This guide covers the three angles, their clinical norms, the landmarks required to measure them, and how they inform extraction decisions — with practical interpretation for daily practice.</p>
+  <p class="hero-meta">By <strong>Bayan Healthcare Analytics</strong> · Updated <time datetime="2026-03-27">March 27, 2026</time> · 8 min read</p>
+</header>
+
+<!-- ── ARTICLE ── -->
+<article class="article">
+
+  <!-- SECTION 1: OVERVIEW -->
+  <section id="overview">
+    <h2>What Is Tweed Analysis?</h2>
+    <p>Tweed analysis — more precisely, the <strong>Tweed Triangle</strong> — is a cephalometric method developed by Charles H. Tweed in the 1940s and 1950s to define the ideal position of the lower incisor within the facial skeleton. It is based on a simple geometric observation: the Frankfort Horizontal plane, the mandibular plane, and the long axis of the lower incisor form a triangle on the lateral cephalogram. The three angles of that triangle — <strong>FMA</strong>, <strong>FMIA</strong>, and <strong>IMPA</strong> — are interdependent by definition, always summing to 180°.</p>
+    <p>Tweed's core argument was that long-term orthodontic stability and facial balance depend on the lower incisor being properly upright over basal bone. A lower incisor that is excessively proclined may resolve crowding in the short term but creates instability, soft-tissue strain, and potential periodontal compromise over time. Tweed used the triangle to define how much incisor retraction was needed and, consequently, whether extraction of lower premolars was indicated.</p>
+    <p>While contemporary orthodontics draws on a broader range of diagnostic frameworks — <a href="/steiner-analysis">Steiner analysis</a>, Ricketts, McNamara, and others — the Tweed Triangle remains a practical and widely taught tool for lower incisor assessment, particularly in practices where incisor position and extraction decisions are central diagnostic questions. It is one of the core analyses included in <a href="/cephalometric-software-comparison">cephalometric analysis software</a> across the market.</p>
+
+    <div class="angle-grid">
+      <div class="angle-card">
+        <div class="angle-abbr">FMA</div>
+        <div class="angle-norm">25°</div>
+        <div class="angle-label">Frankfort–Mandibular<br>Plane Angle</div>
+        <div class="angle-desc">The angle between the Frankfort Horizontal and the mandibular plane. Reflects the vertical skeletal pattern — divergent, average, or convergent.</div>
+      </div>
+      <div class="angle-card">
+        <div class="angle-abbr">FMIA</div>
+        <div class="angle-norm">65°</div>
+        <div class="angle-label">Frankfort–Mandibular<br>Incisor Angle</div>
+        <div class="angle-desc">The angle between the Frankfort Horizontal and the long axis of the lower incisor. Tweed's primary measure of lower incisor position and the treatment goal anchor.</div>
+      </div>
+      <div class="angle-card">
+        <div class="angle-abbr">IMPA</div>
+        <div class="angle-norm">90°</div>
+        <div class="angle-label">Incisor–Mandibular<br>Plane Angle</div>
+        <div class="angle-desc">The angle between the long axis of the lower incisor and the mandibular plane. Directly reflects how upright or proclined the lower incisor is relative to the jaw.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 2: NORMS -->
+  <section id="norms">
+    <h2>Tweed Norms and Clinical Ranges</h2>
+    <p>Tweed established his norms primarily from a sample of untreated individuals with excellent facial balance and stable dentitions. The three angles are not independent — because they form a closed triangle, fixing any two determines the third. This mathematical constraint is both the elegance and the limitation of the system: the entire framework pivots on accepting FMA as a fixed skeletal baseline and working backwards to define the required FMIA and IMPA.</p>
+
+    <div class="table-wrap">
+      <table class="norms-table">
+        <thead>
+          <tr>
+            <th>Measurement</th>
+            <th>Norm</th>
+            <th>Clinical Range</th>
+            <th>High Value Indicates</th>
+            <th>Low Value Indicates</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="measure-name">FMA</td>
+            <td class="norm-val">25°</td>
+            <td>20°–30°</td>
+            <td><span class="tag-high">Hyperdivergent</span> — steep MP, open bite tendency, long LAFH</td>
+            <td><span class="tag-low">Hypodivergent</span> — flat MP, deep bite tendency, short LAFH</td>
+          </tr>
+          <tr>
+            <td class="measure-name">FMIA</td>
+            <td class="norm-val">65°</td>
+            <td>60°–70°</td>
+            <td><span class="tag-high">Retroclined</span> — lower incisor tipped back, upright or retruded</td>
+            <td><span class="tag-low">Proclined</span> — lower incisor tipped forward, dentoalveolar compensation</td>
+          </tr>
+          <tr>
+            <td class="measure-name">IMPA</td>
+            <td class="norm-val">90°</td>
+            <td>85°–95°</td>
+            <td><span class="tag-high">Proclined</span> — incisor leaning forward relative to mandibular plane</td>
+            <td><span class="tag-low">Retroclined</span> — incisor upright or tipped back into mandible</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="clinical-note">
+      <strong>The 180° rule:</strong> FMA + FMIA + IMPA = 180° without exception. If your measurements do not sum to 180°, there is a landmark placement or calculation error. This built-in self-check is one of the most practical features of the Tweed framework — use it to verify your tracing before interpreting results.
+    </div>
+  </section>
+
+  <!-- SECTION 3: LANDMARKS -->
+  <section id="landmarks">
+    <h2>Landmarks and Planes Required</h2>
+    <p>Tweed analysis requires three planes, each defined by two landmarks. Accurate identification of these six points — particularly Porion, Orbitale, and the apex of the lower incisor — is essential. Errors at any one landmark propagate into all three angle measurements simultaneously, because of their shared dependence.</p>
+
+    <div class="landmark-block">
+      <h3>Frankfort Horizontal (FH Plane)</h3>
+      <div class="landmark-list">
+        <div class="landmark-item">
+          <span class="lm-code">Po</span>
+          <span class="lm-text"><strong>Porion</strong> — the uppermost point of the external auditory meatus. In clinical cephalometry this is typically the anatomic Porion identified directly on the radiograph, though some analyses use the machine Porion (top of the ear rod). Consistent definition is important — mixing them introduces systematic error.</span>
+        </div>
+        <div class="landmark-item">
+          <span class="lm-code">Or</span>
+          <span class="lm-text"><strong>Orbitale</strong> — the lowest point on the inferior rim of the bony orbit. Often the most difficult FH landmark to locate precisely, particularly on low-quality radiographs where the two orbits are not perfectly superimposed. When both orbits are visible, use the midpoint between them.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="landmark-block">
+      <h3>Mandibular Plane (MP)</h3>
+      <div class="landmark-list">
+        <div class="landmark-item">
+          <span class="lm-code">Go</span>
+          <span class="lm-text"><strong>Gonion</strong> — the most posteroinferior point of the angle of the mandible. Constructed Gonion is often used: bisect the angle between the mandibular body and ramus planes, and find where that bisector intersects the mandibular outline.</span>
+        </div>
+        <div class="landmark-item">
+          <span class="lm-code">Me</span>
+          <span class="lm-text"><strong>Menton</strong> — the most inferior point of the mandibular symphysis in the midsagittal plane. This defines the anterior anchor of the mandibular plane. Some clinicians use Gnathion (the most anteroinferior point) instead — confirm the convention used in your reference norms.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="landmark-block">
+      <h3>Long Axis of the Lower Incisor</h3>
+      <div class="landmark-list">
+        <div class="landmark-item">
+          <span class="lm-code">L1</span>
+          <span class="lm-text"><strong>Lower incisor tip</strong> — the incisal edge of the most prominent mandibular central incisor. When multiple incisors are visible, use the most labially positioned one.</span>
+        </div>
+        <div class="landmark-item">
+          <span class="lm-code">L1r</span>
+          <span class="lm-text"><strong>Lower incisor root apex</strong> — the tip of the root of the same lower central incisor. The line connecting L1 tip to L1 apex defines the long axis. Root apex identification requires good radiographic quality — open apices in adolescent patients or root resorption can make this landmark difficult to locate precisely.</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 4: FMA ADJUSTMENT -->
+  <section id="fma-adjustment">
+    <h2>FMA-Adjusted Treatment Goals</h2>
+    <p>One of Tweed's most clinically important contributions was the recognition that the <strong>ideal FMIA target should vary with the patient's FMA</strong>. A patient with a steep mandibular plane (high FMA) cannot tolerate as much lower incisor proclination as a patient with a flat mandibular plane (low FMA) — the soft tissue drape, lip support, and smile arc all change with the vertical pattern. Tweed proposed the following adjustment framework:</p>
+
+    <div class="pattern-grid">
+      <div class="pattern-card">
+        <h4><span class="tag-low" style="font-size:10px;">Low FMA</span> Below 20°</h4>
+        <p>Hypodivergent pattern. Mandibular plane is flat. More proclination of the lower incisor is compatible with facial balance. Target FMIA may be adjusted downward to ~60°. Non-extraction is more frequently viable even with moderate crowding.</p>
+      </div>
+      <div class="pattern-card">
+        <h4><span class="tag-normal" style="font-size:10px;">Average FMA</span> 20°–30°</h4>
+        <p>Normodivergent pattern. Tweed's original norms apply directly. Target FMIA of 65° and IMPA of 90°. Extraction decisions driven by the degree of proclination and the space required to achieve that FMIA goal.</p>
+      </div>
+      <div class="pattern-card">
+        <h4><span class="tag-high" style="font-size:10px;">High FMA</span> Above 30°</h4>
+        <p>Hyperdivergent pattern. Steep mandibular plane. Lower incisor proclination is poorly tolerated — soft tissue response, periodontal risk, and open bite tendency all argue for uprighting. Target FMIA adjusted upward to ~70°. Extraction strongly indicated in most cases.</p>
+      </div>
+    </div>
+
+    <p style="margin-top:28px;">This FMA-adjusted framework means Tweed analysis is not a single fixed target but a sliding-scale diagnostic model. The FMIA goal is set first based on FMA, and the degree of lower incisor change required to reach that goal determines whether extraction is indicated. If the required retraction exceeds approximately 4 mm at the crown, extraction is generally the preferred path.</p>
+
+    <div class="clinical-note">
+      <strong>Practical limitation to acknowledge:</strong> Tweed's norms were derived from a predominantly Caucasian sample with specific facial proportions. IMPA of 90° is not a universal biological ideal — population-based studies have documented different mean values in East Asian, African, and Middle Eastern samples. Interpret Tweed measurements alongside the patient's ethnic norms and the broader diagnostic picture from analyses such as <a href="/steiner-analysis">Steiner</a>, Ricketts, and Downs rather than in isolation.
+    </div>
+  </section>
+
+  <!-- SECTION 5: EXTRACTION DECISIONS -->
+  <section id="extraction">
+    <h2>Tweed Analysis and Extraction Decisions</h2>
+    <p>Tweed's original motivation for developing the triangle was specifically to create a rational basis for extraction decisions — an issue that dominated orthodontic debate throughout the mid-twentieth century. His approach was systematic: measure FMA to characterise the vertical pattern, set the FMIA target accordingly, calculate the required change in lower incisor position, and extract if that change cannot be achieved non-extractively.</p>
+
+    <h3>The Diagnostic Sequence</h3>
+    <p>The working sequence in Tweed treatment planning runs as follows. First, measure the current FMA to identify the skeletal vertical pattern. Second, set the treatment target FMIA based on the FMA value — 65° for average FMA, adjusted up or down by 5° for high or low FMA respectively. Third, measure the current FMIA to quantify how far the lower incisor sits from the goal. Fourth, calculate the space needed to retract the lower incisor sufficiently to reach the target FMIA. If that space requirement exceeds what arch expansion or interproximal reduction can provide, extraction of lower first or second premolars is indicated.</p>
+
+    <h3>Where Tweed Analysis Fits in Contemporary Practice</h3>
+    <p>Modern orthodontic diagnosis rarely relies on a single cephalometric analysis. Tweed's framework is most useful as a focused lower incisor assessment tool within a broader diagnostic workup. It pairs well with Steiner's analysis — which approaches the lower incisor through its relationship to the NB line — and with Downs' analysis, which adds the A–B plane and facial angle to the vertical and incisor picture. Running Tweed alongside these analyses in a tool like BCeph gives a multi-framework view of the same clinical question.</p>
+    <p>The core insight remains clinically valid: the mandibular plane angle is a skeletal baseline that the orthodontist cannot substantially change, and the lower incisor position must be planned relative to it. A patient with FMA 35° who presents with IMPA 105° has a significantly different prognosis and treatment plan than one with FMA 20° and IMPA 100° — even though both have proclined lower incisors. Tweed's triangle makes that distinction measurable and communicable.</p>
+  </section>
+
+  <!-- SECTION 6: HOW TO RUN IN BCEPH -->
+  <section id="bceph">
+    <h2>Running Tweed Analysis in BCeph</h2>
+    <p>BCeph includes Tweed Triangle analysis as a built-in free module. The workflow follows standard <a href="/cephalometric-analysis">cephalometric analysis</a> procedure: load your lateral cephalogram, place the required landmarks, and the three angles are calculated automatically with normative comparison.</p>
+    <p>The landmarks required for Tweed in BCeph are <strong>Po</strong> (Porion), <strong>Or</strong> (Orbitale), <strong>Go</strong> (Gonion), <strong>Me</strong> (Menton), <strong>L1</strong> (lower incisor tip), and the lower incisor root apex. If you have already placed these landmarks for another analysis — Downs, for example, shares several of the same points — BCeph carries them over automatically. Switching on Tweed will highlight only the landmarks that still need placement.</p>
+    <p>Results are displayed with normative ranges and a colour-coded deviation flag for each measurement. The 180° sum is verified automatically. PDF report export includes Tweed values alongside any other analyses you have activated for the same case — useful for case documentation and referral letters.</p>
+    <p>Tweed analysis in BCeph is completely free, with no subscription and no per-case charge. Patient images never leave your browser — there is no cloud upload. See how BCeph compares to other tools in the full <a href="/cephalometric-software-comparison">cephalometric software comparison</a>.</p>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq">
+    <h2>Frequently Asked Questions</h2>
+
+    <div class="faq-list">
+      <div class="faq-item">
+        <div class="faq-q">What are the normal values for FMA, FMIA, and IMPA in Tweed analysis?</div>
+        <div class="faq-a">Tweed's published norms are FMA = 25°, FMIA = 65°, and IMPA = 90°. A clinical range of ±5° is generally accepted for each. The three angles must always sum to 180° — this is a mathematical property of the triangle, not an approximation. If your measurements don't total 180°, recheck landmark placement.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">What does a high FMA mean clinically?</div>
+        <div class="faq-a">A high FMA (above 30°) indicates a hyperdivergent skeletal pattern — steep mandibular plane, long lower face height, and an anterior open bite tendency. These patients tolerate less lower incisor proclination. The target FMIA is adjusted upward to around 70°, and extraction of lower premolars is more commonly indicated to allow incisor uprighting without worsening the vertical dimension.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">What is the Tweed Triangle and why does it matter?</div>
+        <div class="faq-a">The Tweed Triangle is the geometric figure formed by the intersection of the Frankfort Horizontal, the mandibular plane, and the long axis of the lower incisor on a lateral cephalogram. Its importance lies in the interdependence of the three angles: because they always sum to 180°, any change to one directly affects the others. This makes it a closed, self-consistent diagnostic system for planning lower incisor position relative to a fixed skeletal baseline.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">How does Tweed analysis inform extraction decisions?</div>
+        <div class="faq-a">Tweed's framework works backwards from a target FMIA (set by the patient's FMA) to determine how much lower incisor retraction is needed. If the space required to achieve that retraction exceeds what non-extraction mechanics can provide, lower premolar extraction is indicated. The FMA is the fixed skeletal anchor — Tweed's insight was that the same degree of incisor proclination carries very different implications depending on whether the mandibular plane is steep or flat.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Can I run Tweed analysis for free?</div>
+        <div class="faq-a">Yes. BCeph includes Tweed Triangle analysis — FMA, FMIA, and IMPA — as a fully free module with no subscription, no per-case fee, and no feature gating. It runs in the browser on any device and keeps all patient data locally on your machine. No cloud upload, no installation required.</div>
+      </div>
+    </div>
+  </section>
+
+</article>
+
+<!-- ── CTA BANNER ── -->
+<div class="cta-banner">
+  <h2>Run Tweed Analysis Free — No Installation</h2>
+  <p>Load your lateral ceph, place six landmarks, and get FMA, FMIA, and IMPA alongside Steiner, Ricketts, and 7+ more analyses. Free, private, browser-based.</p>
+  <a href="/app.html" class="btn-launch">Launch BCeph <span class="arrow">→</span></a>
+</div>
+
+<!-- ── FOOTER ── -->
+<footer class="site-footer">
+  <strong>BCeph</strong> by Bayan Healthcare Analytics ·
+  <a href="/">Home</a> ·
+  <a href="/cephalometric-analysis">What is Cephalometric Analysis?</a> ·
+  <a href="/steiner-analysis">Steiner Analysis</a> ·
+  <a href="/eastman-analysis">Eastman Analysis</a> ·
+  <a href="/cephalometric-software-comparison">Software Comparison</a> ·
+  <a href="/app.html">Launch App</a>
+</footer>
+
+</body>
+</html>
