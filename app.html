@@ -331,6 +331,10 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);font-size:13px;col
       <button class="backup-btn" onclick="exportBackup()">⬇ Export Backup</button>
       <button class="backup-btn" onclick="importBackup()">⬆ Import Backup</button>
     </div>
+    <div class="backup-btn-row">
+      <button class="backup-btn" onclick="exportCSVCurrent()" title="Export measurements for the currently loaded patient">⬇ CSV This Patient</button>
+      <button class="backup-btn" onclick="exportCSVAll()" title="Export measurements for all saved patients">⬇ CSV All Patients</button>
+    </div>
     <div class="pi-section-label">Patient Details</div>
     <div class="pi-grid">
       <div class="modal-field full"><label>Patient Name</label><input type="text" id="pi-name" placeholder="Full name" autocomplete="off"></div>
@@ -395,7 +399,6 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);font-size:13px;col
     </div>
     <div class="tb-sep"></div>
     <button class="tb-btn" onclick="openPatientModal()">Patient</button>
-    <button class="tb-btn" onclick="openPatientModal()">✏️ Edit Patient</button>
     <div class="tb-sep"></div>
     <div class="tb-group">
       <input type="file" id="file-input" accept="image/*" style="display:none" onchange="loadImage(this)">
@@ -413,6 +416,10 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);font-size:13px;col
     <div class="tb-group">
       <button class="tb-btn" id="undo-btn" onclick="undoLandmark()" title="Undo (Ctrl+Z)">↩ Undo</button>
       <button class="tb-btn" id="redo-btn" onclick="redoLandmark()" title="Redo (Ctrl+Shift+Z)">↪ Redo</button>
+    </div>
+    <div class="tb-sep"></div>
+    <div class="tb-group">
+      <button class="tb-btn" onclick="copyTable()">📋 Copy</button>
     </div>
     <div class="tb-sep"></div>
     <button class="tb-btn gold" onclick="generateReport()">📄 Report</button>
@@ -1990,6 +1997,152 @@ function downloadFile(blob, filename){
   setTimeout(()=>{document.body.removeChild(a);URL.revokeObjectURL(a.href);},100);
 }
 
+function buildMeasurementRows(lmSet, pxPerMm){
+  const rows=[];
+  const backupLm={};
+  LM_IDS.forEach(id=>{backupLm[id]=landmarks[id];});
+  const backupCal=pixelsPerMm;
+  LM_IDS.forEach(id=>delete landmarks[id]);
+  Object.keys(lmSet).forEach(id=>{landmarks[id]=lmSet[id];});
+  pixelsPerMm=pxPerMm;
+  ANALYSES.forEach(a=>{
+    a.data.forEach(m=>{
+      const {norm,sd}=getNorm(m);
+      const refOnly=(norm===null||norm===undefined||sd===null||sd===undefined);
+      const missingIds=m.requires.filter(id=>!has(id));
+      const ok=missingIds.length===0;
+      const needsCal=m.unit==='mm'&&pixelsPerMm===0&&m.name!=='LAFH Ratio'&&!m.name.includes('%');
+      let value='',deviation='',status='';
+      if(!ok){
+        status='Missing landmarks: '+missingIds.join(', ');
+      }else if(needsCal){
+        status='Needs calibration';
+      }else{
+        const val=m.calc();
+        if(isNaN(val)){
+          status='N/A';
+        }else{
+          const r=Math.round(val*10)/10;
+          value=r.toString();
+          if(!refOnly){
+            const dev=r-norm;
+            const devA=Math.abs(dev);
+            deviation=(dev>=0?'+':'')+dev.toFixed(1);
+            if(devA<=sd)status='Normal';
+            else if(devA<=sd*2)status='Mild';
+            else status='Severe';
+          }else{
+            status='Ref only';
+          }
+        }
+      }
+      rows.push({analysis:a.label,measurement:m.name,value,unit:m.unit,norm:refOnly?'':String(norm),sd:refOnly?'':String(sd),deviation,status});
+    });
+  });
+  LM_IDS.forEach(id=>delete landmarks[id]);
+  Object.keys(backupLm).forEach(id=>{if(backupLm[id])landmarks[id]=backupLm[id];});
+  pixelsPerMm=backupCal;
+  return rows;
+}
+
+function buildCSVString(patientName,patientFileno,patientDob,patientAge,rows){
+  const normSetLabel=NORM_SETS[activeNormSet]?.label||'Adult Mixed';
+  const today=new Date().toISOString().slice(0,10);
+  const age=patientDob?computeAge(patientDob):(patientAge||'');
+  const header=[
+    '# BCeph Cephalometric Analysis Export',
+    '# Patient: '+(patientName||'Unknown'),
+    '# File No: '+(patientFileno||'\u2014')+' | Age: '+(age||'\u2014'),
+    '# Export Date: '+today+' | Norms: '+normSetLabel
+  ];
+  const columns=['Analysis','Measurement','Value','Unit','Norm','SD','Deviation','Status'];
+  const csvLines=[
+    ...header,
+    columns.join(','),
+    ...rows.map(r=>[
+      '"'+r.analysis.replace(/"/g,'""')+'"',
+      '"'+r.measurement.replace(/"/g,'""')+'"',
+      r.value,r.unit,r.norm,r.sd,r.deviation,
+      '"'+r.status.replace(/"/g,'""')+'"'
+    ].join(','))
+  ];
+  return csvLines.join('\n');
+}
+
+function exportCSVCurrent(){
+  const placedCount=LM_IDS.filter(id=>has(id)).length;
+  if(placedCount===0){toast('No landmarks placed for current patient','\u26a0\ufe0f');return;}
+  const lmSnap={};
+  LM_IDS.forEach(id=>{if(has(id))lmSnap[id]=landmarks[id];});
+  const rows=buildMeasurementRows(lmSnap,pixelsPerMm);
+  const csv=buildCSVString(patientInfo.name,patientInfo.fileno,patientInfo.dob,patientInfo.age,rows);
+  const today=new Date().toISOString().slice(0,10);
+  const filename='bceph_'+(patientInfo.fileno||patientInfo.name||'export').replace(/[^a-zA-Z0-9_-]/g,'_')+'_'+today+'.csv';
+  const blob=new Blob([csv],{type:'text/csv;charset=utf-8'});
+  downloadFile(blob,filename);
+  closeModal('patient-modal');
+  toast('CSV exported','\u2b07');
+  if(typeof analytics!=='undefined')analytics.logEvent('csv_exported',{scope:'single'});
+}
+
+function exportCSVAll(){
+  autoSaveCurrentPatient();
+  const db=getPatientDB();
+  const withTracing=db.filter(p=>p._tracing&&p._tracing.landmarks&&Object.keys(p._tracing.landmarks).length>0);
+  if(withTracing.length===0){toast('No patients with landmarks to export','\u26a0\ufe0f');return;}
+  const normSetLabel=NORM_SETS[activeNormSet]?.label||'Adult Mixed';
+  const today=new Date().toISOString().slice(0,10);
+  const allCSVBlocks=[];
+  allCSVBlocks.push('# BCeph \u2014 All Patients Export');
+  allCSVBlocks.push('# Export Date: '+today+' | Norms: '+normSetLabel);
+  allCSVBlocks.push('# Patients: '+withTracing.length);
+  allCSVBlocks.push('');
+  const columns=['Patient','File No','Analysis','Measurement','Value','Unit','Norm','SD','Deviation','Status'];
+  allCSVBlocks.push(columns.join(','));
+  withTracing.forEach(p=>{
+    const t=p._tracing;
+    const lmSet=t.landmarks||{};
+    const cal=t.pixelsPerMm||0;
+    const rows=buildMeasurementRows(lmSet,cal);
+    rows.forEach(r=>{
+      allCSVBlocks.push([
+        '"'+(p.name||'Unnamed').replace(/"/g,'""')+'"',
+        '"'+(p.fileno||'').replace(/"/g,'""')+'"',
+        '"'+r.analysis.replace(/"/g,'""')+'"',
+        '"'+r.measurement.replace(/"/g,'""')+'"',
+        r.value,r.unit,r.norm,r.sd,r.deviation,
+        '"'+r.status.replace(/"/g,'""')+'"'
+      ].join(','));
+    });
+  });
+  const csv=allCSVBlocks.join('\n');
+  const blob=new Blob([csv],{type:'text/csv;charset=utf-8'});
+  downloadFile(blob,'bceph_all_patients_'+today+'.csv');
+  closeModal('patient-modal');
+  toast('Exported '+withTracing.length+' patients','\u2b07');
+  if(typeof analytics!=='undefined')analytics.logEvent('csv_exported',{scope:'all',count:withTracing.length});
+}
+
+function copyTable(){
+  const placedCount=LM_IDS.filter(id=>has(id)).length;
+  if(placedCount===0){toast('Place landmarks first','\u26a0\ufe0f');return;}
+  const lmSnap={};
+  LM_IDS.forEach(id=>{if(has(id))lmSnap[id]=landmarks[id];});
+  const rows=buildMeasurementRows(lmSnap,pixelsPerMm);
+  if(rows.length===0){toast('No measurements to copy','\u26a0\ufe0f');return;}
+  const columns=['Analysis','Measurement','Value','Unit','Norm','SD','Deviation','Status'];
+  const tsv=[
+    columns.join('\t'),
+    ...rows.map(r=>[r.analysis,r.measurement,r.value,r.unit,r.norm,r.sd,r.deviation,r.status].join('\t'))
+  ].join('\n');
+  navigator.clipboard.writeText(tsv).then(()=>{
+    toast('Copied \u2014 paste into Excel or Sheets','\ud83d\udccb');
+  }).catch(()=>{
+    toast('Copy failed \u2014 check browser permissions','\u26a0\ufe0f');
+  });
+  if(typeof analytics!=='undefined')analytics.logEvent('table_copied');
+}
+
 function exportBackup(){
   autoSaveCurrentPatient();
   const db=getPatientDB();
@@ -2166,7 +2319,7 @@ function startOnboarding() {
       body: 'Save your landmark positions at any time. Use Restore to reload a previous session — useful when tracing across multiple appointments or checking your work later.'
     },
     {
-      targetFn: () => Array.from(document.querySelectorAll('.tb-btn')).find(b => b.textContent.includes('Edit Patient')) || null,
+      targetFn: () => Array.from(document.querySelectorAll('.tb-btn')).find(b => b.textContent.trim() === 'Patient') || null,
       title: 'Edit Patient Details',
       body: 'Update patient info, switch to another patient, or start a new case at any time. Your current tracing is auto-saved before switching.'
     },
