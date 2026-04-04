@@ -1247,12 +1247,14 @@ const NORM_SETS = {
     'FMA':{norm:23,sd:3},'MMPA':{norm:26,sd:4},'FMIA':{norm:67,sd:3},'IMPA':{norm:90,sd:3},
     'Post Face Ht (S-Go)':{norm:81,sd:6},'Ant Face Ht (N-Me)':{norm:122,sd:7},'PFH/AFH Ratio':{norm:64,sd:3},
     'Convexity A to N-Pg':{norm:1,sd:2},
+    'Wits Appraisal (AO–BO)':{norm:1,sd:2},
   }},
   adult_f:    { label:'Adult Female',     ov:{
     'SNA':{norm:80,sd:3},'SNB':{norm:78,sd:3},'ANB':{norm:2,sd:2},'GoGn–SN':{norm:34,sd:5},
     'FMA':{norm:26,sd:3},'MMPA':{norm:28,sd:4},'FMIA':{norm:63,sd:3},'IMPA':{norm:91,sd:3},
     'Post Face Ht (S-Go)':{norm:74,sd:6},'Ant Face Ht (N-Me)':{norm:113,sd:7},'PFH/AFH Ratio':{norm:62,sd:3},
     'Convexity A to N-Pg':{norm:2,sd:2},
+    'Wits Appraisal (AO–BO)':{norm:0,sd:2},
   }},
   child_8:    { label:'Child 8–10y',      ov:{
     'SNA':{norm:80,sd:4},'SNB':{norm:76,sd:4},'ANB':{norm:4,sd:2},
@@ -1428,10 +1430,12 @@ function getOcclusalPlane(){
     const pts=[L('Op1'),L('Op2'),L('Op3')];
     const mx=(pts[0].x+pts[1].x+pts[2].x)/3, my=(pts[0].y+pts[1].y+pts[2].y)/3;
     const sxx=pts.reduce((s,p)=>s+(p.x-mx)**2,0);
+    const syy=pts.reduce((s,p)=>s+(p.y-my)**2,0);
     const sxy=pts.reduce((s,p)=>s+(p.x-mx)*(p.y-my),0);
-    if(Math.abs(sxx)<0.001)return{A:L('Op1'),B:L('Op2')};
-    const slope=sxy/sxx, span=(imgW||1000);
-    let A={x:mx-span/2,y:my-slope*(span/2)}, B={x:mx+span/2,y:my+slope*(span/2)};
+    if(sxx+syy<0.001)return{A:L('Op1'),B:L('Op2')};
+    const theta=0.5*Math.atan2(2*sxy,sxx-syy);
+    const cos=Math.cos(theta),sin=Math.sin(theta),span=(imgW||1000);
+    let A={x:mx-cos*span/2,y:my-sin*span/2}, B={x:mx+cos*span/2,y:my+sin*span/2};
     // Re-orient fitted line to match Op1→Op2 direction so sign stays consistent
     const dot=(B.x-A.x)*(L('Op2').x-L('Op1').x)+(B.y-A.y)*(L('Op2').y-L('Op1').y);
     if(dot<0){const tmp=A;A=B;B=tmp;}
@@ -1474,7 +1478,7 @@ const STEINER=[
   {name:'L1–NB (mm)',unit:'mm',norm:4,sd:1,requires:['N','B','L1T'],calc:()=>px2mm(perpDist(L('L1T'),L('N'),L('B')))},
   {name:'Interincisal',unit:'°',norm:131,sd:6,requires:['U1T','U1A','L1T','L1A'],calc:()=>angleBetweenLines(L('U1A'),L('U1T'),L('L1A'),L('L1T'))},
   {name:'Occ Plane to SN',unit:'°',norm:14,sd:4,requires:['S','N','Op1','Op2'],
-    calc:()=>acuteAngleBetweenLines(L('S'),L('N'),L('Op1'),L('Op2'))},
+    calc:()=>{const op=getOcclusalPlane();if(!op)return NaN;return acuteAngleBetweenLines(L('S'),L('N'),op.A,op.B);}},
 ];
 const DOWNS=[
   {name:'Facial Angle',unit:'°',norm:87.8,sd:3.6,requires:['N','Pg','Po','Or'],calc:()=>angleBetweenLines(L('N'),L('Pg'),L('Po'),L('Or'))},
@@ -1493,13 +1497,13 @@ const DOWNS=[
   {name:'Interincisal Angle',unit:'°',norm:130,sd:5.8,requires:['U1T','U1A','L1T','L1A'],
     calc:()=>angleBetweenLines(L('U1A'),L('U1T'),L('L1A'),L('L1T'))},
   {name:'Incisor Occ Plane Angle',unit:'°',norm:14.5,sd:3.5,requires:['L1T','L1A','Op1','Op2'],
-    calc:()=>90-acuteAngleBetweenLines(L('L1A'),L('L1T'),L('Op1'),L('Op2'))},
+    calc:()=>{const op=getOcclusalPlane();if(!op)return NaN;return 90-acuteAngleBetweenLines(L('L1A'),L('L1T'),op.A,op.B);}},
   {name:'Incisor Mand Plane Angle',unit:'°',norm:1.4,sd:3.8,requires:['L1T','L1A','Go','Me'],
     calc:()=>90-acuteAngleBetweenLines(L('L1A'),L('L1T'),L('Go'),L('Me'))},
   {name:'U1 to A-Pog (mm)',unit:'mm',norm:2.7,sd:1.8,requires:['A','Pg','U1T'],
     calc:()=>px2mm(perpDist(L('U1T'),L('A'),L('Pg')))},
   {name:'Cant of Occ Plane',unit:'°',norm:9.3,sd:3.8,requires:['Op1','Op2','Po','Or'],
-    calc:()=>acuteAngleBetweenLines(L('Op1'),L('Op2'),L('Po'),L('Or'))},
+    calc:()=>{const op=getOcclusalPlane();if(!op)return NaN;return acuteAngleBetweenLines(op.A,op.B,L('Po'),L('Or'));}},
 ];
 const TWEED=[
   {name:'FMA',unit:'°',norm:25,sd:3,requires:['Po','Or','Go','Me'],calc:()=>acuteAngleBetweenLines(L('Po'),L('Or'),L('Go'),L('Me'))},
@@ -1580,7 +1584,7 @@ const BJORK=[
   {name:'U1 to SN',unit:'°',norm:109.3,sd:6,requires:['S','N','U1T','U1A'],
     calc:()=>acuteAngleBetweenLines(L('S'),L('N'),L('U1A'),L('U1T'))},
   {name:'Occ Plane to Go-Me',unit:'°',norm:19.8,sd:4.1,requires:['Op1','Op2','Go','Me'],
-    calc:()=>acuteAngleBetweenLines(L('Op1'),L('Op2'),L('Go'),L('Me'))},
+    calc:()=>{const op=getOcclusalPlane();if(!op)return NaN;return acuteAngleBetweenLines(op.A,op.B,L('Go'),L('Me'));}},
 ];
 
 /* ── RICKETTS ── */
@@ -1638,9 +1642,35 @@ const WITS=[
       const op=getOcclusalPlane();if(!op)return NaN;
       const dx=op.B.x-op.A.x,dy=op.B.y-op.A.y,len=Math.sqrt(dx*dx+dy*dy);if(len===0)return NaN;
       const ux=dx/len,uy=dy/len;
+
+      // Scalar projections of A and B onto the OP vector
       const ao=(L('A').x-op.A.x)*ux+(L('A').y-op.A.y)*uy;
       const bo=(L('B').x-op.A.x)*ux+(L('B').y-op.A.y)*uy;
-      return px2mm(ao-bo);
+
+      // Absolute distance in mm (magnitude)
+      const distanceMm=Math.abs(px2mm(ao-bo));
+
+      // Actual X coordinates of the projected points on screen
+      const a_proj_x=op.A.x+ao*ux;
+      const b_proj_x=op.A.x+bo*ux;
+
+      // Auto-detect patient facing direction
+      let isFacingRight=true;
+      if(has('S')&&has('N')){
+        isFacingRight=L('N').x>L('S').x;
+      }else if(has('Po')&&has('Or')){
+        isFacingRight=L('Or').x>L('Po').x;
+      }
+
+      // Standard WITS sign: + = A anterior to B (Class II), - = A posterior to B (Class III)
+      let sign=1;
+      if(isFacingRight){
+        sign=(a_proj_x>=b_proj_x)?1:-1;
+      }else{
+        sign=(a_proj_x<=b_proj_x)?1:-1;
+      }
+
+      return distanceMm*sign;
     }},
 ];
 
