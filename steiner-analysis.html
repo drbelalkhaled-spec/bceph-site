@@ -224,6 +224,38 @@
       padding: 3rem 2rem 2rem;
       border-bottom: 1px solid var(--border);
     }
+    .hero-inner {
+      display: flex;
+      align-items: flex-start;
+      gap: 2.5rem;
+    }
+    .hero-text { flex: 1; min-width: 0; }
+    .hero-portrait {
+      flex-shrink: 0;
+      width: 220px;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid var(--border-gold);
+      background: #f0f3fa;
+      margin-top: 0.5rem;
+    }
+    .hero-portrait img {
+      width: 100%;
+      height: 170px;
+      object-fit: cover;
+      object-position: top center;
+      display: block;
+      filter: grayscale(20%);
+    }
+    .hero-portrait figcaption {
+      font-size: 0.72rem;
+      color: var(--text-subtle);
+      text-align: center;
+      padding: 0.5rem 0.75rem;
+      border-top: 1px solid var(--border);
+      font-style: italic;
+      letter-spacing: 0.02em;
+    }
     .article-tag {
       display: inline-block;
       font-size: 0.72rem;
@@ -493,6 +525,9 @@
       .anb-grid { grid-template-columns: 1fr; }
       .nav-links { display: none; }
       .bottom-cta { padding: 2rem 1.5rem; }
+      .hero-inner { flex-direction: column; }
+      .hero-portrait { width: 100%; }
+      .hero-portrait img { height: 200px; }
     }
   </style>
 </head>
@@ -506,6 +541,7 @@
         <li><a href="https://www.bceph.com/#features">Features</a></li>
         <li><a href="https://www.bceph.com/#analyses">Analyses</a></li>
         <li><a href="https://www.bceph.com/cephalometric-analysis">Ceph Guide</a></li>
+        <li><a href="https://www.bceph.com/blog">Blog</a></li>
         <li><a href="https://www.bceph.com/app.html" class="nav-cta">Launch App →</a></li>
       </ul>
     </div>
@@ -522,14 +558,22 @@
 
   <!-- ── HERO ── -->
   <header class="article-hero">
-    <div class="article-tag">Analysis Deep-Dive</div>
-    <h1>Steiner Analysis: A Complete Cephalometric Guide</h1>
-    <div class="article-meta">
-      <span>By <strong>Bayan Healthcare Analytics</strong></span>
-      <span>·</span>
-      <span>~8 min read</span>
-      <span>·</span>
-      <span>SNA · SNB · ANB · U1–NA · L1–NB · Interincisal Angle</span>
+    <div class="hero-inner">
+      <div class="hero-text">
+        <div class="article-tag">Analysis Deep-Dive</div>
+        <h1>Steiner Analysis: A Complete Cephalometric Guide</h1>
+        <div class="article-meta">
+          <span>By <strong>Bayan Healthcare Analytics</strong></span>
+          <span>·</span>
+          <span>~8 min read</span>
+          <span>·</span>
+          <span>SNA · SNB · ANB · U1–NA · L1–NB · Interincisal Angle</span>
+        </div>
+      </div>
+      <figure class="hero-portrait">
+        <img src="/cecil-steiner.png" alt="Cecil C. Steiner DDS — developer of Steiner cephalometric analysis, recipient of the Albert H. Ketcham Memorial Award 1968" width="220" height="170" loading="eager">
+        <figcaption>Cecil C. Steiner, DDS · Ketcham Award 1968</figcaption>
+      </figure>
     </div>
   </header>
 
