@@ -4987,6 +4987,12 @@ async function onSuccessfulAuth(user) {
 /* ── SIGN OUT ── */
 async function logout() {
   if (!confirm('Sign out? Your data remains safely backed up in the cloud.')) return;
+  // Clear all patient data from localStorage to prevent cross-account leaks
+  localStorage.removeItem('ortho_db');
+  localStorage.removeItem('ortho_form');
+  localStorage.removeItem('last_cloud_sync');
+  // Clear patient photos from IndexedDB
+  try { indexedDB.deleteDatabase('bceph_report_photos'); } catch(e) { console.warn('Photo DB cleanup:', e); }
   await signOut(auth);
   window._cloudSync = null;
   const section = document.getElementById('topbar-user');
