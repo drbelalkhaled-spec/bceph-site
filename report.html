@@ -3253,8 +3253,9 @@ function updateTopbarUser(user) {
   // Show last sync time
   const ls = document.getElementById('last-synced-text');
   if (ls) {
-    const saved = localStorage.getItem('last_cloud_sync');
-    ls.textContent = saved ? 'Last synced: ' + new Date(saved).toLocaleString() : 'Ready — syncing now…';
+    const uid = user.uid || '';
+    const saved = localStorage.getItem('sync_ts_' + uid);
+    ls.textContent = saved && parseInt(saved) > 0 ? 'Last synced: ' + new Date(parseInt(saved)).toLocaleString() : 'Ready — syncing now…';
   }
 }
 function showAuthOverlay() {
@@ -4321,7 +4322,10 @@ window.onload = () => {
 window.addEventListener('online', () => {
   if (window._cloudSync) {
     setSyncStatus('syncing');
-    window._cloudSync.retryPendingSync().catch(e => setSyncStatus('error'));
+    const lastTs = window._cloudSync.getLastSyncTs();
+    window._cloudSync.pushChangedSince(lastTs)
+      .then(() => { window._cloudSync.setLastSyncTs(Date.now()); setSyncStatus('synced'); })
+      .catch(e => setSyncStatus('error'));
   }
 });
 
@@ -4717,7 +4721,7 @@ import {
 } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js';
 import {
   getFirestore, doc, setDoc, getDoc, getDocs,
-  collection, deleteDoc
+  collection, deleteDoc, query, where
 } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js';
 
 /* ── YOUR FIREBASE CONFIG ─────────────────────────────── */
@@ -4891,7 +4895,7 @@ async function onSuccessfulAuth(user) {
   // Create global CloudSync instance
   window._cloudSync = new CloudSync(db, auth, user);
 
-  // Smart merge: compare updatedAt timestamps, keep whichever version is newer
+  // ── Smart merge helper: compare updatedAt, keep newer version ──
   function smartMerge(localDb, cloudPatients) {
     const localMap = {};
     localDb.forEach((r, i) => { localMap[r.id] = i; });
@@ -4905,11 +4909,9 @@ async function onSuccessfulAuth(user) {
         updatedAt: p.updatedAt || Date.now()
       };
       if (localMap[p.id] === undefined) {
-        // New patient — add it
         localDb.push(cloudEntry);
         added++;
       } else {
-        // Existing patient — keep whichever is newer
         const localIdx = localMap[p.id];
         const localTs  = localDb[localIdx].updatedAt || 0;
         const cloudTs  = p.updatedAt || 0;
@@ -4926,16 +4928,19 @@ async function onSuccessfulAuth(user) {
   window.toggleCloudSync = (enabled) => {
     localStorage.setItem('cloud_sync_enabled', enabled ? '1' : '0');
   };
+
+  // ── Manual restore: full pull + smart merge ──
   window.restoreFromCloud = async () => {
-    if (!confirm('Restore all patient records from cloud? They will be merged with your local data.')) return;
+    if (!confirm('Restore all patient records from cloud? They will be merged with your local data (newer version wins).')) return;
     window._setSyncStatus?.('syncing');
     try {
-      const restored = await window._cloudSync.restoreFromCloud();
-      const patients = restored.patients || [];
+      const patients = await window._cloudSync.restoreAll();
       if (patients.length > 0) {
         const localDb = window._getDB?.() || [];
         const { merged, added, updated } = smartMerge(localDb, patients);
-        window._saveDB?.(merged);
+        if (added > 0 || updated > 0) {
+          window._saveDB?.(merged);
+        }
         const parts = [];
         if (added > 0) parts.push(`${added} new`);
         if (updated > 0) parts.push(`${updated} updated`);
@@ -4943,6 +4948,7 @@ async function onSuccessfulAuth(user) {
       } else {
         window.showToast?.('No cloud records found for your account', 'ℹ️', 3000);
       }
+      window._cloudSync.setLastSyncTs(Date.now());
       window._setSyncStatus?.('synced');
     } catch(e) {
       window._setSyncStatus?.('error');
@@ -4956,41 +4962,56 @@ async function onSuccessfulAuth(user) {
   // Hide auth overlay — show the app
   window._hideAuthOverlay?.();
 
-  // Push-on-save + smart pull-on-login:
-  // 1. First push any local data to cloud
-  // 2. Then pull cloud data and merge (adds new + updates newer)
-  window._setSyncStatus?.('syncing');
-  try {
-    // Push local → cloud
-    await window._cloudSync.retryPendingSync().catch(e => console.warn('Push sync error:', e));
-    // Pull cloud → local (smart merge)
-    const restored = await window._cloudSync.restoreFromCloud();
-    const patients = restored.patients || [];
-    if (patients.length > 0) {
-      const localDb = window._getDB?.() || [];
-      const { merged, added, updated } = smartMerge(localDb, patients);
-      if (added > 0 || updated > 0) {
-        window._saveDB?.(merged);
-        const parts = [];
-        if (added > 0) parts.push(`${added} new`);
-        if (updated > 0) parts.push(`${updated} updated`);
-        window.showToast?.(`Cloud sync: ${parts.join(', ')} patient(s)`, '☁️', 3000);
+  // ── Smart incremental sync on login ──
+  // 1. Push local changes since last sync → cloud
+  // 2. Pull cloud changes since last sync → merge locally
+  // First login on new device: lastSyncTs = 0, so everything syncs
+  if (localStorage.getItem('cloud_sync_enabled') !== '0') {
+    window._setSyncStatus?.('syncing');
+    try {
+      const lastSyncTs = window._cloudSync.getLastSyncTs();
+
+      // Push local → cloud (only records changed since last sync)
+      if (lastSyncTs === 0) {
+        await window._cloudSync.pushAll().catch(e => console.warn('Full push error:', e));
+      } else {
+        await window._cloudSync.pushChangedSince(lastSyncTs).catch(e => console.warn('Push error:', e));
       }
+
+      // Pull cloud → local (only records changed since last sync, then smart merge)
+      const cloudPatients = lastSyncTs === 0
+        ? await window._cloudSync.restoreAll()
+        : await window._cloudSync.fetchChangedSince(lastSyncTs);
+
+      if (cloudPatients.length > 0) {
+        const localDb = window._getDB?.() || [];
+        const { merged, added, updated } = smartMerge(localDb, cloudPatients);
+        if (added > 0 || updated > 0) {
+          window._saveDB?.(merged);
+          const parts = [];
+          if (added > 0) parts.push(`${added} new`);
+          if (updated > 0) parts.push(`${updated} updated`);
+          window.showToast?.(`Cloud sync: ${parts.join(', ')} patient(s)`, '☁️', 3000);
+        }
+      }
+
+      window._cloudSync.setLastSyncTs(Date.now());
+      window._setSyncStatus?.('synced');
+    } catch(e) {
+      console.warn('Login sync error:', e);
+      window._setSyncStatus?.('error');
     }
-    window._setSyncStatus?.('synced');
-  } catch(e) {
-    console.warn('Login sync error:', e);
-    window._setSyncStatus?.('error');
   }
 }
 
-/* ── SIGN OUT ── */
+/* ── SIGN OUT (secure: clears patient data to prevent cross-account leaks) ── */
 async function logout() {
   if (!confirm('Sign out? Your data remains safely backed up in the cloud.')) return;
-  // Clear all patient data from localStorage to prevent cross-account leaks
+  // Clear patient data from localStorage
   localStorage.removeItem('ortho_db');
   localStorage.removeItem('ortho_form');
   localStorage.removeItem('last_cloud_sync');
+  // Note: sync_ts_<uid> is kept — it's per-user and harmless
   // Clear patient photos from IndexedDB
   try { indexedDB.deleteDatabase('bceph_report_photos'); } catch(e) { console.warn('Photo DB cleanup:', e); }
   await signOut(auth);
@@ -5003,7 +5024,7 @@ async function logout() {
   window._showAuthOverlay?.();
 }
 
-/* ── CLOUDSYNC CLASS ── */
+/* ── CLOUDSYNC CLASS (Smart Incremental Sync) ── */
 class CloudSync {
   constructor(firestore, firebaseAuth, user) {
     this.fs   = firestore;
@@ -5014,11 +5035,21 @@ class CloudSync {
   _doc(sub, id)  { return doc(this.fs, 'users', this.uid, sub, id); }
   _coll(sub)     { return collection(this.fs, 'users', this.uid, sub); }
 
+  // Get last sync timestamp (stored per user UID to avoid cross-account issues)
+  getLastSyncTs() {
+    return parseInt(localStorage.getItem('sync_ts_' + this.uid) || '0', 10);
+  }
+  setLastSyncTs(ts) {
+    localStorage.setItem('sync_ts_' + this.uid, String(ts));
+    const el = document.getElementById('last-synced-text');
+    if (el) el.textContent = 'Last synced: ' + new Date(ts).toLocaleString();
+  }
+
   // Save a stripped (no photos) record to Firestore
   async saveRecord(sub, id, data) {
     const payload = this._strip({ ...data, updatedAt: Date.now() });
     await setDoc(this._doc(sub, id), payload, { merge: true });
-    this._updateLastSynced();
+    this.setLastSyncTs(Date.now());
   }
 
   // Delete a record from Firestore
@@ -5026,21 +5057,45 @@ class CloudSync {
     await deleteDoc(this._doc(sub, id));
   }
 
-  // Pull all records from Firestore for this user
-  async restoreFromCloud() {
-    const subs = ['patients'];
-    const result = {};
-    for (const sub of subs) {
-      const snap = await getDocs(this._coll(sub));
-      result[sub] = snap.docs.map(d => ({ ...d.data(), id: d.id }));
-    }
-    return result;
+  // Pull ALL records from Firestore (used for manual full restore)
+  async restoreAll() {
+    const snap = await getDocs(this._coll('patients'));
+    return snap.docs.map(d => ({ ...d.data(), id: d.id }));
   }
 
-  // Push every local record that may be missing from Firestore
-  async retryPendingSync() {
+  // Pull only records changed since a given timestamp (smart incremental pull)
+  async fetchChangedSince(sinceTs) {
+    const q = query(this._coll('patients'), where('updatedAt', '>', sinceTs));
+    const snap = await getDocs(q);
+    return snap.docs.map(d => ({ ...d.data(), id: d.id }));
+  }
+
+  // Push only local records that are newer than last sync timestamp
+  async pushChangedSince(sinceTs) {
     const localDb = window._getDB?.() || [];
-    if (!localDb.length) { return; }
+    if (!localDb.length) return 0;
+    let pushed = 0, errors = 0;
+    for (const entry of localDb) {
+      const entryTs = entry.updatedAt || 0;
+      if (entryTs > sinceTs) {
+        try {
+          const payload = this._strip({ ...entry.meta, ...entry.data, savedAt: entry.savedAt, updatedAt: entryTs });
+          await setDoc(this._doc('patients', entry.id), payload, { merge: true });
+          pushed++;
+        } catch(e) {
+          errors++;
+          console.warn('Sync push failed for', entry.id, e.message);
+        }
+      }
+    }
+    if (errors > 0) console.warn(errors + ' record(s) failed to push');
+    return pushed;
+  }
+
+  // Legacy: Push every local record (used for first-ever sync)
+  async pushAll() {
+    const localDb = window._getDB?.() || [];
+    if (!localDb.length) return;
     let errors = 0;
     for (const entry of localDb) {
       try {
@@ -5052,7 +5107,6 @@ class CloudSync {
       }
     }
     if (errors > 0) throw new Error(errors + ' record(s) failed to sync');
-    this._updateLastSynced();
   }
 
   // Strip photo fields and base64 blobs before cloud upload
@@ -5075,13 +5129,6 @@ class CloudSync {
         this._stripB64(obj[k]);
       }
     }
-  }
-
-  _updateLastSynced() {
-    const ts = new Date().toISOString();
-    localStorage.setItem('last_cloud_sync', ts);
-    const el = document.getElementById('last-synced-text');
-    if (el) el.textContent = 'Last synced: ' + new Date(ts).toLocaleString();
   }
 }
 
